@@ -1,5 +1,6 @@
 <script>
-  import { maskPhone, formatAmount } from '$lib/api.js';
+  import { maskPhone } from '$lib/api.js';
+  import AnimatedNumber from './AnimatedNumber.svelte';
 
   /** @type {{ item: object }} */
   let { item } = $props();
@@ -12,7 +13,7 @@
     <div class="lb-phone">{maskPhone(item.phone)}</div>
   </div>
   <div>
-    <div class="lb-amount">฿{formatAmount(item.total)}</div>
+    <div class="lb-amount"><AnimatedNumber value={item.total} prefix="฿" /></div>
     <div class="lb-amount-label">ยอดรวม</div>
   </div>
 </div>

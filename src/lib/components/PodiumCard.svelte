@@ -1,5 +1,6 @@
 <script>
-  import { maskPhone, formatAmount } from '$lib/api.js';
+  import { maskPhone } from '$lib/api.js';
+  import AnimatedNumber from './AnimatedNumber.svelte';
 
   /** @type {{ item: object|null, rank: number }} */
   let { item, rank } = $props();
@@ -14,7 +15,7 @@
   {#if item}
     <div class="podium-name">{item.name}</div>
     <div class="podium-phone">{maskPhone(item.phone)}</div>
-    <div class="podium-amount">฿{formatAmount(item.total)}</div>
+    <div class="podium-amount"><AnimatedNumber value={item.total} prefix="฿" /></div>
     <div class="podium-amount-label">ยอดรวม</div>
   {:else}
     <div class="podium-name">ว่าง</div>
