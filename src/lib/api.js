@@ -2,8 +2,8 @@ import { PUBLIC_API_URL } from '$env/static/public';
 export const API_URL = PUBLIC_API_URL;
 
 export function maskPhone(phone) {
-  if (!phone || phone.length < 4) return phone;
-  return phone.slice(0, 3) + '****' + phone.slice(-3);
+  if (!phone || phone.length < 10) return phone;
+  return phone.slice(0, 3) + '-xxx-xx' + phone.slice(-2);
 }
 
 export function formatAmount(n) {
