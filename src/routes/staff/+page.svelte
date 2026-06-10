@@ -1,6 +1,9 @@
 <script>
   import Toast from '$lib/components/Toast.svelte';
   import { checkPhone, addTransaction } from '$lib/api.js';
+  import { enhance } from '$app/forms';
+
+  let { data, form } = $props();
 
   let phone = $state('');
   let name = $state('');
@@ -75,76 +78,118 @@
   <title>บันทึกยอด — Staff</title>
 </svelte:head>
 
-<div class="page">
-  <div class="card">
-    <div class="logo">
-      <div class="logo-badge">Staff Portal</div>
-      <h1>บันทึกยอดซื้อ</h1>
-      <p>กรอกข้อมูลลูกค้าและยอดซื้อ</p>
-    </div>
+{#if !data.authenticated}
+  <!-- ── หน้า Login ── -->
+  <div class="page">
+    <div class="card">
+      <div class="logo">
+        <div class="logo-badge">Staff Portal</div>
+        <h1>ใส่รหัสผ่าน</h1>
+        <p>กรุณากรอกรหัสเพื่อเข้าใช้งาน</p>
+      </div>
 
-    <div class="field">
-      <label for="phone">เบอร์โทรศัพท์</label>
-      <input
-        id="phone"
-        type="tel"
-        placeholder="0812345678"
-        maxlength="10"
-        autocomplete="off"
-        value={phone}
-        oninput={onPhoneInput}
-      />
-      {#if isChecking}
-        <div class="checking-hint">⏳ กำลังตรวจสอบ...</div>
-      {/if}
-    </div>
-
-    <div class="field">
-      <label for="name">ชื่อ-นามสกุล</label>
-      {#if knownName}
-        <div class="name-found">
-          <div class="name-found-icon">✓</div>
-          <div>
-            <div class="name-found-text">{knownName}</div>
-            <div class="name-found-sub">พบในระบบแล้ว</div>
-          </div>
+      <form method="POST" action="?/login" use:enhance>
+        <div class="field">
+          <label for="code">รหัสผ่าน</label>
+          <input
+            id="code"
+            name="code"
+            type="password"
+            placeholder="••••••••"
+            autocomplete="off"
+            autofocus
+          />
         </div>
-      {:else}
-        <input
-          id="name"
-          type="text"
-          placeholder="สมชาย ใจดี"
-          autocomplete="off"
-          bind:value={name}
-        />
-      {/if}
-    </div>
 
-    <div class="field">
-      <label for="amount">ยอดซื้อ (บาท)</label>
-      <div class="amount-wrapper">
-        <span class="amount-prefix">฿</span>
+        {#if form?.error}
+          <div class="error-hint">{form.error}</div>
+        {/if}
+
+        <button class="btn" type="submit">เข้าสู่ระบบ</button>
+      </form>
+    </div>
+  </div>
+
+{:else}
+  <!-- ── หน้า Staff Form ── -->
+  <div class="page">
+    <div class="card">
+      <div class="logo">
+        <div class="logo-badge">Staff Portal</div>
+        <h1>บันทึกยอดซื้อ</h1>
+        <p>กรอกข้อมูลลูกค้าและยอดซื้อ</p>
+      </div>
+
+      <div class="field">
+        <label for="phone">เบอร์โทรศัพท์</label>
         <input
-          id="amount"
-          type="number"
-          placeholder="0"
-          min="1"
-          bind:value={amount}
+          id="phone"
+          type="tel"
+          placeholder="0812345678"
+          maxlength="10"
+          autocomplete="off"
+          value={phone}
+          oninput={onPhoneInput}
         />
+        {#if isChecking}
+          <div class="checking-hint">⏳ กำลังตรวจสอบ...</div>
+        {/if}
+      </div>
+
+      <div class="field">
+        <label for="name">ชื่อ-นามสกุล</label>
+        {#if knownName}
+          <div class="name-found">
+            <div class="name-found-icon">✓</div>
+            <div>
+              <div class="name-found-text">{knownName}</div>
+              <div class="name-found-sub">พบในระบบแล้ว</div>
+            </div>
+          </div>
+        {:else}
+          <input
+            id="name"
+            type="text"
+            placeholder="สมชาย ใจดี"
+            autocomplete="off"
+            bind:value={name}
+          />
+        {/if}
+      </div>
+
+      <div class="field">
+        <label for="amount">ยอดซื้อ (บาท)</label>
+        <div class="amount-wrapper">
+          <span class="amount-prefix">฿</span>
+          <input
+            id="amount"
+            type="number"
+            placeholder="0"
+            min="1"
+            bind:value={amount}
+          />
+        </div>
+      </div>
+
+      <button class="btn" onclick={submit} disabled={isSubmitting}>
+        {#if isSubmitting}
+          <span class="spinner"></span>กำลังบันทึก...
+        {:else}
+          บันทึกยอด
+        {/if}
+      </button>
+
+      <div class="bottom-actions">
+        <a href="/staff/list" class="btn-list">📋 ดูรายชื่อทั้งหมด</a>
+        <form method="POST" action="?/logout" use:enhance>
+          <button type="submit" class="btn-logout">ออกจากระบบ</button>
+        </form>
       </div>
     </div>
-
-    <button class="btn" onclick={submit} disabled={isSubmitting}>
-      {#if isSubmitting}
-        <span class="spinner"></span>กำลังบันทึก...
-      {:else}
-        บันทึกยอด
-      {/if}
-    </button>
   </div>
-</div>
 
-<Toast bind:visible={toast.visible} bind:type={toast.type} bind:message={toast.message} />
+  <Toast bind:visible={toast.visible} bind:type={toast.type} bind:message={toast.message} />
+{/if}
 
 <style>
   .page {
@@ -290,4 +335,51 @@
     color: #a89af9;
     margin-top: 6px;
   }
+
+  .error-hint {
+    font-size: 13px;
+    color: #f87171;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  .btn-logout {
+    width: 100%;
+    background: transparent;
+    color: #6b6b80;
+    border: 1px solid #2a2a38;
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 14px;
+    font-family: 'Sarabun', sans-serif;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .btn-logout:hover { border-color: #f87171; color: #f87171; }
+
+  .bottom-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .bottom-actions form { margin: 0; }
+
+  .btn-list {
+    display: block;
+    text-align: center;
+    background: rgba(124, 106, 247, 0.1);
+    color: #a89af9;
+    border: 1px solid rgba(124, 106, 247, 0.3);
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .btn-list:hover { background: rgba(124, 106, 247, 0.2); }
 </style>

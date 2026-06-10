@@ -20,6 +20,11 @@ export async function checkPhone(phone) {
   return res.json();
 }
 
+export async function fetchAllSpenders() {
+  const res = await fetch(`${API_URL}?action=getAllSpenders&_=${Date.now()}`);
+  return res.json();
+}
+
 export async function addTransaction(phone, name, amount) {
   const res = await fetch(API_URL, {
     method: 'POST',
