@@ -1,4 +1,5 @@
-export const API_URL = 'https://script.google.com/macros/s/AKfycbx-rnofjZSVdH_zfywCkSXbIqlNESb7yqTx2yv6zGO3rtS2U7QtXM8RuKgefYRvZPWrQg/exec';
+import { PUBLIC_API_URL } from '$env/static/public';
+export const API_URL = PUBLIC_API_URL;
 
 export function maskPhone(phone) {
   if (!phone || phone.length < 4) return phone;
