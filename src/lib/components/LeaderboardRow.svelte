@@ -10,7 +10,7 @@
   <div class="lb-rank">{item.rank}</div>
   <div class="lb-info">
     <div class="lb-name-row">
-      <span class="lb-name">{maskPhone(item.phone)}</span>
+      <span class="lb-name">{item.name}</span>
       {#if rankChange !== 0}
         <span class="rank-change" class:up={rankChange > 0} class:down={rankChange < 0}>
           {rankChange > 0 ? '▲' : '▼'}{Math.abs(rankChange)}

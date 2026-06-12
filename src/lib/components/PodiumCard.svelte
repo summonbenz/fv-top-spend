@@ -17,7 +17,7 @@
   <div class="middle">
     {#if item}
       <div class="podium-name-row">
-        <span class="podium-name">{maskPhone(item.phone)}</span>
+        <span class="podium-name">{item.name}</span>
         {#if rankChange !== 0}
           <span class="rank-change" class:up={rankChange > 0} class:down={rankChange < 0}>
             {rankChange > 0 ? '▲' : '▼'}{Math.abs(rankChange)}
