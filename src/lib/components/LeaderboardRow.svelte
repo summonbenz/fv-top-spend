@@ -9,8 +9,7 @@
 <div class="lb-row animate-in">
   <div class="lb-rank">{item.rank}</div>
   <div class="lb-info">
-    <div class="lb-name">{item.name}</div>
-    <div class="lb-phone">{maskPhone(item.phone)}</div>
+    <div class="lb-name">{maskPhone(item.phone)}</div>
   </div>
   <div>
     <div class="lb-amount"><AnimatedNumber value={item.total} prefix="฿" /></div>

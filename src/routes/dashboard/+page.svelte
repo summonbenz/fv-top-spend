@@ -48,9 +48,8 @@
 
 <div class="container">
   <header>
-    <div class="event-badge">Live Ranking</div>
     <h1>Top <span class="title-highlight">Spender</span></h1>
-    <p class="subtitle">อัปเดทอัตโนมัติทุก 60 วินาที</p>
+    <div class="event-badge">Live Ranking</div>
   </header>
 
   <div id="content">
@@ -66,16 +65,14 @@
       </div>
     {:else}
       <div class="podium-section">
-        <div class="section-label">🏆 Top 3 รับรางวัล</div>
         <div class="podium">
-          <PodiumCard item={top3[1]} rank={2} />
           <PodiumCard item={top3[0]} rank={1} />
+          <PodiumCard item={top3[1]} rank={2} />
           <PodiumCard item={top3[2]} rank={3} />
         </div>
       </div>
 
       {#if rest.length > 0}
-        <div class="section-label" style="margin-top:36px; margin-bottom:16px;">อันดับ 4–10</div>
         <div class="leaderboard">
           {#each rest as item (item.phone)}
             <LeaderboardRow {item} />
@@ -195,10 +192,9 @@
   }
 
   .podium {
-    display: grid;
-    grid-template-columns: 1fr 1.15fr 1fr;
+    display: flex;
+    flex-direction: column;
     gap: 12px;
-    align-items: end;
   }
 
   .leaderboard {
