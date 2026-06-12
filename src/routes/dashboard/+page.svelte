@@ -48,7 +48,7 @@
 
 <div class="container">
   <header>
-    <h1>Top <span class="title-highlight">Spender</span></h1>
+    <h1>FleurVive<br/>Top <span class="title-highlight">Spender</span></h1>
     <div class="event-badge">Live Ranking</div>
   </header>
 
@@ -90,8 +90,8 @@
 
 <style>
   :global(body) {
-    background: #07070f;
-    color: #eeeef8;
+    background: #100c00;
+    color: #fef6d0;
     min-height: 100vh;
     overflow-x: hidden;
   }
@@ -99,20 +99,20 @@
   .bg-orb {
     position: fixed;
     border-radius: 50%;
-    filter: blur(80px);
+    filter: blur(90px);
     pointer-events: none;
     z-index: 0;
   }
 
   .orb-1 {
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(124,106,247,0.12), transparent 70%);
-    top: -100px; left: -100px;
+    width: 520px; height: 520px;
+    background: radial-gradient(circle, rgba(255,200,0,0.15), transparent 70%);
+    top: -120px; left: -120px;
   }
 
   .orb-2 {
-    width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(245,200,66,0.08), transparent 70%);
+    width: 420px; height: 420px;
+    background: radial-gradient(circle, rgba(255,140,0,0.12), transparent 70%);
     bottom: -80px; right: -80px;
   }
 
@@ -133,22 +133,22 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: rgba(124, 106, 247, 0.12);
-    border: 1px solid rgba(124, 106, 247, 0.3);
+    background: rgba(255, 200, 0, 0.12);
+    border: 1px solid rgba(255, 200, 0, 0.35);
     border-radius: 100px;
     padding: 6px 16px;
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 2.5px;
     text-transform: uppercase;
-    color: #7c6af7;
+    color: #ffc800;
     margin-bottom: 20px;
   }
 
   .event-badge::before {
     content: '';
     width: 6px; height: 6px;
-    background: #7c6af7;
+    background: #ffc800;
     border-radius: 50%;
     animation: pulse 2s infinite;
   }
@@ -168,7 +168,7 @@
   }
 
   .title-highlight {
-    background: linear-gradient(135deg, #f5c842, #f59e42);
+    background: linear-gradient(135deg, #ffd700, #ff8c00);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -176,7 +176,7 @@
 
   .subtitle {
     font-size: 15px;
-    color: #55556a;
+    color: #8a7430;
   }
 
   .podium-section { margin-bottom: 40px; }
@@ -186,7 +186,7 @@
     font-weight: 700;
     letter-spacing: 3px;
     text-transform: uppercase;
-    color: #55556a;
+    color: #8a7430;
     margin-bottom: 20px;
     text-align: center;
   }
@@ -210,12 +210,12 @@
     gap: 12px;
     margin-top: 40px;
     font-size: 13px;
-    color: #55556a;
+    color: #8a7430;
   }
 
   .status-dot {
     width: 8px; height: 8px;
-    background: #34d399;
+    background: #ffc800;
     border-radius: 50%;
     animation: pulse 2s infinite;
   }
@@ -223,7 +223,7 @@
   .empty-state {
     text-align: center;
     padding: 60px 20px;
-    color: #55556a;
+    color: #8a7430;
   }
 
   .empty-state .icon { font-size: 48px; margin-bottom: 16px; }

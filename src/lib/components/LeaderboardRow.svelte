@@ -21,21 +21,21 @@
   .lb-row {
     display: flex;
     align-items: center;
-    background: #10101c;
-    border: 1px solid #1e1e30;
+    background: rgba(255, 200, 0, 0.04);
+    border: 1px solid rgba(255, 180, 0, 0.15);
     border-radius: 14px;
     padding: 16px 20px;
     gap: 16px;
     transition: border-color 0.2s;
   }
 
-  .lb-row:hover { border-color: #2e2e45; }
+  .lb-row:hover { border-color: rgba(255, 180, 0, 0.35); }
 
   .lb-rank {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 13px;
     font-weight: 700;
-    color: #55556a;
+    color: #8a7430;
     width: 28px;
     text-align: center;
     flex-shrink: 0;
@@ -46,6 +46,7 @@
   .lb-name {
     font-size: 15px;
     font-weight: 600;
+    color: #fef6d0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -53,7 +54,7 @@
 
   .lb-phone {
     font-size: 12px;
-    color: #55556a;
+    color: #8a7430;
     margin-top: 2px;
   }
 
@@ -61,13 +62,13 @@
     font-family: 'Space Grotesk', sans-serif;
     font-size: 18px;
     font-weight: 700;
-    color: #7c6af7;
+    color: #ffc800;
     flex-shrink: 0;
   }
 
   .lb-amount-label {
     font-size: 10px;
-    color: #55556a;
+    color: #8a7430;
     text-align: right;
     margin-top: 1px;
     font-family: 'Sarabun', sans-serif;

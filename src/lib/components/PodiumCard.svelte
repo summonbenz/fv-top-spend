@@ -48,21 +48,21 @@
   .podium-card:hover { transform: translateX(4px); }
 
   .rank-1 {
-    background: linear-gradient(160deg, rgba(245,200,66,0.1), rgba(245,200,66,0.03));
-    border-color: rgba(245,200,66,0.3);
-    box-shadow: 0 0 40px rgba(245,200,66,0.25), inset 0 1px 0 rgba(245,200,66,0.2);
+    background: linear-gradient(160deg, rgba(255,210,0,0.14), rgba(255,210,0,0.04));
+    border-color: rgba(255,210,0,0.45);
+    box-shadow: 0 0 48px rgba(255,210,0,0.25), inset 0 1px 0 rgba(255,210,0,0.25);
   }
 
   .rank-2 {
-    background: linear-gradient(160deg, rgba(192,200,216,0.08), rgba(192,200,216,0.02));
-    border-color: rgba(192,200,216,0.2);
-    box-shadow: 0 0 30px rgba(192,200,216,0.15);
+    background: linear-gradient(160deg, rgba(255,170,0,0.10), rgba(255,170,0,0.03));
+    border-color: rgba(255,170,0,0.28);
+    box-shadow: 0 0 32px rgba(255,170,0,0.18);
   }
 
   .rank-3 {
-    background: linear-gradient(160deg, rgba(224,128,74,0.08), rgba(224,128,74,0.02));
-    border-color: rgba(224,128,74,0.2);
-    box-shadow: 0 0 30px rgba(224,128,74,0.15);
+    background: linear-gradient(160deg, rgba(200,130,0,0.09), rgba(200,130,0,0.02));
+    border-color: rgba(200,130,0,0.22);
+    box-shadow: 0 0 28px rgba(200,130,0,0.14);
   }
 
   .podium-empty { opacity: 0.3; }
@@ -93,9 +93,9 @@
     font-weight: 700;
   }
 
-  .rank-1 .rank-medal { background: #f5c842; color: #1a1400; }
-  .rank-2 .rank-medal { background: #c0c8d8; color: #151a20; }
-  .rank-3 .rank-medal { background: #e0804a; color: #1a0d05; }
+  .rank-1 .rank-medal { background: #ffd700; color: #1a1000; }
+  .rank-2 .rank-medal { background: #ffaa00; color: #1a0e00; }
+  .rank-3 .rank-medal { background: #c87800; color: #fff8e0; }
 
   .middle {
     flex: 1;
@@ -105,7 +105,7 @@
   .podium-name {
     font-size: 16px;
     font-weight: 700;
-    color: #eeeef8;
+    color: #fef6d0;
     margin-bottom: 4px;
     white-space: nowrap;
     overflow: hidden;
@@ -114,7 +114,7 @@
 
   .podium-phone {
     font-size: 12px;
-    color: #55556a;
+    color: #8a7430;
     letter-spacing: 0.5px;
   }
 
@@ -129,13 +129,13 @@
     font-weight: 700;
   }
 
-  .rank-1 .podium-amount { color: #f5c842; }
-  .rank-2 .podium-amount { color: #c0c8d8; }
-  .rank-3 .podium-amount { color: #e0804a; }
+  .rank-1 .podium-amount { color: #ffd700; }
+  .rank-2 .podium-amount { color: #ffaa00; }
+  .rank-3 .podium-amount { color: #c87800; }
 
   .podium-amount-label {
     font-size: 11px;
-    color: #55556a;
+    color: #8a7430;
     margin-top: 2px;
   }
 
