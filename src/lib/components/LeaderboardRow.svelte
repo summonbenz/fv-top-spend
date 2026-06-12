@@ -57,7 +57,7 @@
   }
 
   .lb-name {
-    font-size: 20px;
+    font-size: clamp(16px, 4.5vw, 22px);
     font-weight: 600;
     color: #fef6d0;
     white-space: nowrap;
@@ -73,7 +73,7 @@
 
   .lb-amount {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 24px;
+    font-size: clamp(20px, 6vw, 30px);
     font-weight: 700;
     color: #ffc800;
     flex-shrink: 0;

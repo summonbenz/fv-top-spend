@@ -116,7 +116,7 @@
   }
 
   .podium-name {
-    font-size: 22px;
+    font-size: clamp(16px, 4.5vw, 22px);
     font-weight: 700;
     color: #fef6d0;
     white-space: nowrap;
@@ -137,7 +137,7 @@
 
   .podium-amount {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 30px;
+    font-size: clamp(20px, 6vw, 30px);
     font-weight: 700;
   }
 
@@ -169,8 +169,6 @@
 
   @media (max-width: 480px) {
     .podium-card { padding: 16px; gap: 12px; }
-    .podium-name { font-size: 14px; }
-    .podium-amount { font-size: 18px; }
     .crown { font-size: 20px; }
   }
 </style>
