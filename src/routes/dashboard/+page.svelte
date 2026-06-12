@@ -1,5 +1,7 @@
 <script>
   import { onMount, onDestroy } from 'svelte';
+  import { flip } from 'svelte/animate';
+  import { quintOut } from 'svelte/easing';
   import PodiumCard from '$lib/components/PodiumCard.svelte';
   import LeaderboardRow from '$lib/components/LeaderboardRow.svelte';
   import { fetchTopSpenders } from '$lib/api.js';
@@ -11,15 +13,28 @@
   let status = $state('loading'); // 'loading' | 'ok' | 'error' | 'empty'
   let interval;
 
-  const top3 = $derived([spenders[0] ?? null, spenders[1] ?? null, spenders[2] ?? null]);
+  const top3 = $derived(spenders.slice(0, 3));
   const rest = $derived(spenders.slice(3));
 
   async function load() {
     try {
       const data = await fetchTopSpenders();
       if (data.topSpenders?.length > 0) {
-        spenders = data.topSpenders;
+        const prevRanks = {};
+        spenders.forEach((s, i) => { prevRanks[s.phone] = i + 1; });
+
+        // แนบ rankChange เข้าใน item โดยตรง เพื่อให้ reactive แน่นอน
+        spenders = data.topSpenders.map((s, i) => {
+          const prev = prevRanks[s.phone];
+          const newRank = i + 1;
+          return { ...s, rankChange: prev !== undefined ? prev - newRank : 0 };
+        });
         status = 'ok';
+
+        // ล้าง indicator หลัง 3 วินาที
+        setTimeout(() => {
+          spenders = spenders.map(s => ({ ...s, rankChange: 0 }));
+        }, 3000);
       } else {
         spenders = [];
         status = 'empty';
@@ -66,16 +81,20 @@
     {:else}
       <div class="podium-section">
         <div class="podium">
-          <PodiumCard item={top3[0]} rank={1} />
-          <PodiumCard item={top3[1]} rank={2} />
-          <PodiumCard item={top3[2]} rank={3} />
+          {#each top3 as item, i (item.phone)}
+            <div animate:flip={{ duration: 500, easing: quintOut }}>
+              <PodiumCard {item} rank={i + 1} rankChange={item.rankChange ?? 0} />
+            </div>
+          {/each}
         </div>
       </div>
 
       {#if rest.length > 0}
         <div class="leaderboard">
           {#each rest as item (item.phone)}
-            <LeaderboardRow {item} />
+            <div animate:flip={{ duration: 400, easing: quintOut }}>
+              <LeaderboardRow {item} rankChange={item.rankChange ?? 0} />
+            </div>
           {/each}
         </div>
       {/if}

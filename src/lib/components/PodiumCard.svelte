@@ -2,8 +2,8 @@
   import { maskPhone } from '$lib/api.js';
   import AnimatedNumber from './AnimatedNumber.svelte';
 
-  /** @type {{ item: object|null, rank: number }} */
-  let { item, rank } = $props();
+  /** @type {{ item: object|null, rank: number, rankChange?: number }} */
+  let { item, rank, rankChange = 0 } = $props();
 
   const crowns = { 1: '👑', 2: '🥈', 3: '🥉' };
   const rankClass = $derived(`rank-${rank}`);
@@ -16,7 +16,14 @@
   </div>
   <div class="middle">
     {#if item}
-      <div class="podium-name">{maskPhone(item.phone)}</div>
+      <div class="podium-name-row">
+        <span class="podium-name">{maskPhone(item.phone)}</span>
+        {#if rankChange !== 0}
+          <span class="rank-change" class:up={rankChange > 0} class:down={rankChange < 0}>
+            {rankChange > 0 ? '▲' : '▼'}{Math.abs(rankChange)}
+          </span>
+        {/if}
+      </div>
     {:else}
       <div class="podium-name">ว่าง</div>
       <div class="podium-phone">ยังไม่มีผู้เข้าร่วม</div>
@@ -102,11 +109,16 @@
     min-width: 0;
   }
 
+  .podium-name-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
   .podium-name {
-    font-size: 16px;
+    font-size: 22px;
     font-weight: 700;
     color: #fef6d0;
-    margin-bottom: 4px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -125,7 +137,7 @@
 
   .podium-amount {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 22px;
+    font-size: 30px;
     font-weight: 700;
   }
 
@@ -137,6 +149,22 @@
     font-size: 11px;
     color: #8a7430;
     margin-top: 2px;
+  }
+
+  .rank-change {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+    animation: fadeOut 3s ease forwards;
+  }
+
+  .rank-change.up { color: #4ade80; }
+  .rank-change.down { color: #f87171; }
+
+  @keyframes fadeOut {
+    0%, 60% { opacity: 1; }
+    100% { opacity: 0; }
   }
 
   @media (max-width: 480px) {
