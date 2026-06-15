@@ -1,10 +1,16 @@
 <script>
   import { formatAmount } from '$lib/api.js';
 
-  let { value, prefix = '' } = $props();
+  let { value, prefix = '', storageKey = '' } = $props();
 
-  let displayText = $state(prefix + formatAmount(value));
-  let fromValue = value;
+  function getSaved() {
+    if (!storageKey) return 0;
+    const v = localStorage.getItem('animnum_' + storageKey);
+    return v !== null ? Number(v) : 0;
+  }
+
+  let fromValue = getSaved();
+  let displayText = $state(prefix + formatAmount(fromValue));
 
   function easeOutQuart(t) {
     return 1 - Math.pow(1 - t, 4);
@@ -15,9 +21,10 @@
     const from = fromValue;
     fromValue = to;
 
+    if (storageKey) localStorage.setItem('animnum_' + storageKey, String(to));
     if (from === to) return;
 
-    const duration = from === 0 ? 1200 : 800;
+    const duration = 1000;
     const startTime = performance.now();
     const diff = to - from;
 

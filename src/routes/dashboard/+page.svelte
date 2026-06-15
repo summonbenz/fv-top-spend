@@ -61,18 +61,22 @@
     <div class="bg-overlay"></div>
 <div class="bg-orb orb-1"></div>
 <div class="bg-orb orb-2"></div>
-
+<div class="sunflower">
+  <img src="/sunflower.png" alt="Sunflower" style="width: 100%; max-width: 400px; display: block; margin: 0 auto 40px;" />
+</div>
 <div class="container">
   <header>
-    <h1>FleurVive<br/>Top <span class="title-highlight">Spender</span></h1>
+    <img src="/logo.png" alt="FleurVive Logo" style="width: 300px; margin-bottom: 0px;" />
+    <h1>Top <span class="title-highlight">Spender</span></h1>
     <!-- <div class="event-badge">Live Ranking</div> -->
   </header>
+
 
   <div id="content">
     {#if status === 'loading'}
       <div class="empty-state">
         <div class="icon">⏳</div>
-        <p>กำลังโหลดข้อมูล...</p>
+        <p>รอสักครู่ ...</p>
       </div>
     {:else if status === 'empty' || status === 'error'}
       <div class="empty-state">
@@ -121,8 +125,8 @@
   :global(body) {
     background: #100c00 url('/bg.png') center center / cover no-repeat fixed;
     color: #fef6d0;
-    min-height: 100vh;
-    overflow-x: hidden;
+    height: 100vh;
+    overflow: hidden;
   }
 
   .bg-overlay { display: none; }
@@ -272,6 +276,7 @@
   .info{
     text-align:center;
     margin-top: 20px;
+    text-shadow: 0 0 12px rgba(0,0,0,0.9), 0 2px 8px rgba(0,0,0,0.8), 0 0 30px rgba(0,0,0,0.6);
   }
   .text-underline {
     text-decoration: underline;
@@ -281,6 +286,13 @@
 
   .empty-state .icon { font-size: 48px; margin-bottom: 16px; }
   .empty-state p { font-size: 16px; }
+
+  .sunflower{
+    position: absolute;
+    top: 0;
+    right: 0;
+    max-width: 250px;
+  }
 
   @media (max-width: 480px) {
     .podium { gap: 8px; }

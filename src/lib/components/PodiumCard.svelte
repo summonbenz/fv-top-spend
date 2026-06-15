@@ -31,7 +31,7 @@
   </div>
   <div class="right">
     {#if item}
-      <div class="podium-amount"><AnimatedNumber value={item.total} prefix="฿" /></div>
+      <div class="podium-amount"><AnimatedNumber value={item.total} prefix="฿" storageKey={item.phone} /></div>
       <div class="podium-amount-label">ยอดรวม</div>
     {:else}
       <div class="podium-amount">—</div>
