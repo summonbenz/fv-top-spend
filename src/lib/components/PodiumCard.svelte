@@ -3,7 +3,7 @@
   import AnimatedNumber from './AnimatedNumber.svelte';
 
   /** @type {{ item: object|null, rank: number, rankChange?: number }} */
-  let { item, rank, rankChange = 0 } = $props();
+  let { item, rank, rankChange = 0, maskingPrefix = false } = $props();
 
   const crowns = { 1: '👑', 2: '🥈', 3: '🥉' };
   const rankClass = $derived(`rank-${rank}`);
@@ -31,7 +31,7 @@
   </div>
   <div class="right">
     {#if item}
-      <div class="podium-amount"><AnimatedNumber value={item.total} prefix="฿" storageKey={item.phone} /></div>
+      <div class="podium-amount"><AnimatedNumber value={item.total} prefix="฿" storageKey={item.phone} mask={maskingPrefix} /></div>
       <div class="podium-amount-label">ยอดรวม</div>
     {:else}
       <div class="podium-amount">—</div>

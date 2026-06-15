@@ -11,6 +11,8 @@
   let spenders = $state([]);
   let lastUpdate = $state('—');
   let status = $state('loading'); // 'loading' | 'ok' | 'error' | 'empty'
+  let paused = $state(false);
+  let maskingPrefix = $state(false);
   let interval;
 
   const top3 = $derived(spenders.slice(0, 3));
@@ -19,11 +21,20 @@
   async function load() {
     try {
       const data = await fetchTopSpenders();
+
+      paused = data.pause === true || String(data.pause).toLowerCase() === 'true';
+      maskingPrefix = data.maskingPrefix === true || String(data.maskingPrefix).toLowerCase() === 'true';
+
+      if (paused) {
+        status = 'ok';
+        lastUpdate = `อัปเดทล่าสุด ${new Date().toLocaleTimeString('th-TH')}`;
+        return;
+      }
+
       if (data.topSpenders?.length > 0) {
         const prevRanks = {};
         spenders.forEach((s, i) => { prevRanks[s.phone] = i + 1; });
 
-        // แนบ rankChange เข้าใน item โดยตรง เพื่อให้ reactive แน่นอน
         spenders = data.topSpenders.map((s, i) => {
           const prev = prevRanks[s.phone];
           const newRank = i + 1;
@@ -31,7 +42,6 @@
         });
         status = 'ok';
 
-        // ล้าง indicator หลัง 3 วินาที
         setTimeout(() => {
           spenders = spenders.map(s => ({ ...s, rankChange: 0 }));
         }, 3000);
@@ -62,11 +72,11 @@
 <div class="bg-orb orb-1"></div>
 <div class="bg-orb orb-2"></div>
 <div class="sunflower">
-  <img src="/sunflower.png" alt="Sunflower" style="width: 100%; max-width: 400px; display: block; margin: 0 auto 40px;" />
+  <img src="/sunflower.png" alt="Sunflower" class="sunflower-img" />
 </div>
 <div class="container">
   <header>
-    <img src="/logo.png" alt="FleurVive Logo" style="width: 300px; margin-bottom: 0px;" />
+    <img src="/logo.png" alt="FleurVive Logo" class="logo-img" />
     <h1>Top <span class="title-highlight">Spender</span></h1>
     <!-- <div class="event-badge">Live Ranking</div> -->
   </header>
@@ -83,12 +93,17 @@
         <div class="icon">🏆</div>
         <p>{status === 'error' ? '⚠️ ไม่สามารถโหลดข้อมูลได้' : 'ยังไม่มีข้อมูล รอ staff กรอกยอดแรก!'}</p>
       </div>
+    {:else if paused}
+      <div class="paused-state">
+        <div class="paused-icon">🔒</div>
+        <p class="paused-text">ปิดการแสดงยอดแล้ว<br/>รอประกาศผล</p>
+      </div>
     {:else}
       <div class="podium-section">
         <div class="podium">
           {#each top3 as item, i (item.phone)}
             <div animate:flip={{ duration: 500, easing: quintOut }}>
-              <PodiumCard {item} rank={i + 1} rankChange={item.rankChange ?? 0} />
+              <PodiumCard {item} rank={i + 1} rankChange={item.rankChange ?? 0} {maskingPrefix} />
             </div>
           {/each}
         </div>
@@ -98,7 +113,7 @@
         <div class="leaderboard">
           {#each rest as item (item.phone)}
             <div animate:flip={{ duration: 400, easing: quintOut }}>
-              <LeaderboardRow {item} rankChange={item.rankChange ?? 0} />
+              <LeaderboardRow {item} rankChange={item.rankChange ?? 0} {maskingPrefix} />
             </div>
           {/each}
         </div>
@@ -157,6 +172,19 @@
     max-width: 820px;
     margin: 0 auto;
     padding: 48px 24px 80px;
+  }
+
+  .sunflower-img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .logo-img {
+    display: block;
+    width: clamp(140px, 38vw, 300px);
+    height: auto;
+    margin: 0 auto;
   }
 
   header {
@@ -273,6 +301,21 @@
     color: #8a7430;
   }
 
+  .paused-state {
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .paused-icon { font-size: 48px; margin-bottom: 16px; }
+
+  .paused-text {
+    font-size: clamp(18px, 5vw, 26px);
+    font-weight: 600;
+    color: #ffc800;
+    line-height: 1.6;
+    text-shadow: 0 0 20px rgba(255,200,0,0.4), 0 2px 8px rgba(0,0,0,0.6);
+  }
+
   .info{
     text-align:center;
     margin-top: 20px;
@@ -287,11 +330,14 @@
   .empty-state .icon { font-size: 48px; margin-bottom: 16px; }
   .empty-state p { font-size: 16px; }
 
-  .sunflower{
-    position: absolute;
+  .sunflower {
+    position: fixed;
     top: 0;
     right: 0;
-    max-width: 250px;
+    width: clamp(100px, 18vw, 220px);
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
   }
 
   @media (max-width: 480px) {

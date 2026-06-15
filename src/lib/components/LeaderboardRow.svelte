@@ -3,7 +3,7 @@
   import AnimatedNumber from './AnimatedNumber.svelte';
 
   /** @type {{ item: object, rankChange?: number }} */
-  let { item, rankChange = 0 } = $props();
+  let { item, rankChange = 0, maskingPrefix = false } = $props();
 </script>
 
 <div class="lb-row animate-in">
@@ -19,7 +19,7 @@
     </div>
   </div>
   <div class="lb-right">
-    <div class="lb-amount"><AnimatedNumber value={item.total} prefix="฿" storageKey={item.phone} /></div>
+    <div class="lb-amount"><AnimatedNumber value={item.total} prefix="฿" storageKey={item.phone} mask={maskingPrefix} /></div>
     <div class="lb-amount-label">ยอดรวม</div>
   </div>
 </div>
