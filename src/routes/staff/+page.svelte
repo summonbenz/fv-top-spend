@@ -200,7 +200,7 @@
     align-items: center;
     justify-content: center;
     padding: 24px 16px;
-    font-family: 'Sarabun', sans-serif;
+    font-family: 'Kanit', sans-serif;
   }
 
   .card {
@@ -252,7 +252,7 @@
     border-radius: 12px;
     padding: 14px 16px;
     font-size: 16px;
-    font-family: 'Sarabun', sans-serif;
+    font-family: 'Kanit', sans-serif;
     color: #f0f0f5;
     transition: border-color 0.2s;
     outline: none;
@@ -307,7 +307,7 @@
     padding: 16px;
     font-size: 16px;
     font-weight: 700;
-    font-family: 'Sarabun', sans-serif;
+    font-family: 'Kanit', sans-serif;
     cursor: pointer;
     margin-top: 8px;
     transition: opacity 0.2s, transform 0.1s;
@@ -351,7 +351,7 @@
     border-radius: 12px;
     padding: 12px;
     font-size: 14px;
-    font-family: 'Sarabun', sans-serif;
+    font-family: 'Kanit', sans-serif;
     cursor: pointer;
     transition: border-color 0.2s, color 0.2s;
   }

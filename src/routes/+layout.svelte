@@ -12,7 +12,7 @@
   }
 
   :global(body) {
-    font-family: 'Sarabun', sans-serif;
+    font-family: 'Kanit', sans-serif;
   }
 
   :global(.animate-in) {

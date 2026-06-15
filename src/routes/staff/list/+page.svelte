@@ -93,7 +93,7 @@
     color: #f0f0f5;
     min-height: 100vh;
     padding: 40px 24px 80px;
-    font-family: 'Sarabun', sans-serif;
+    font-family: 'Kanit', sans-serif;
   }
 
   .container {
@@ -161,7 +161,7 @@
     border-radius: 12px;
     padding: 13px 40px 13px 40px;
     font-size: 15px;
-    font-family: 'Sarabun', sans-serif;
+    font-family: 'Kanit', sans-serif;
     color: #f0f0f5;
     outline: none;
     transition: border-color 0.2s;

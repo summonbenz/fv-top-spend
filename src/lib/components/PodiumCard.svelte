@@ -50,26 +50,27 @@
     display: flex;
     align-items: center;
     gap: 16px;
+    backdrop-filter: blur(8px);
   }
 
   .podium-card:hover { transform: translateX(4px); }
 
   .rank-1 {
-    background: linear-gradient(160deg, rgba(255,210,0,0.14), rgba(255,210,0,0.04));
-    border-color: rgba(255,210,0,0.45);
-    box-shadow: 0 0 48px rgba(255,210,0,0.25), inset 0 1px 0 rgba(255,210,0,0.25);
+    background: linear-gradient(160deg, rgba(40,26,0,0.90), rgba(25,16,0,0.93));
+    border-color: rgba(255,240,180,0.75);
+    box-shadow: 0 0 24px 6px rgba(255,210,0,0.45), 0 0 60px 10px rgba(255,180,0,0.25), inset 0 1px 0 rgba(255,240,180,0.3);
   }
 
   .rank-2 {
-    background: linear-gradient(160deg, rgba(255,170,0,0.10), rgba(255,170,0,0.03));
-    border-color: rgba(255,170,0,0.28);
-    box-shadow: 0 0 32px rgba(255,170,0,0.18);
+    background: linear-gradient(160deg, rgba(32,20,0,0.90), rgba(22,14,0,0.93));
+    border-color: rgba(255,230,160,0.55);
+    box-shadow: 0 0 20px 4px rgba(255,170,0,0.35), 0 0 50px 8px rgba(255,140,0,0.18);
   }
 
   .rank-3 {
-    background: linear-gradient(160deg, rgba(200,130,0,0.09), rgba(200,130,0,0.02));
-    border-color: rgba(200,130,0,0.22);
-    box-shadow: 0 0 28px rgba(200,130,0,0.14);
+    background: linear-gradient(160deg, rgba(28,18,0,0.90), rgba(20,12,0,0.93));
+    border-color: rgba(240,200,120,0.45);
+    box-shadow: 0 0 18px 4px rgba(200,130,0,0.32), 0 0 44px 8px rgba(180,100,0,0.16);
   }
 
   .podium-empty { opacity: 0.3; }
@@ -117,11 +118,12 @@
 
   .podium-name {
     font-size: clamp(16px, 4.5vw, 22px);
-    font-weight: 700;
+    font-weight: 500;
     color: #fef6d0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.6);
   }
 
   .podium-phone {
@@ -139,6 +141,7 @@
     font-family: 'Space Grotesk', sans-serif;
     font-size: clamp(20px, 6vw, 30px);
     font-weight: 700;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.5);
   }
 
   .rank-1 .podium-amount { color: #ffd700; }

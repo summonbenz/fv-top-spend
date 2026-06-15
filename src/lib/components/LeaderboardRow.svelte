@@ -28,15 +28,16 @@
   .lb-row {
     display: flex;
     align-items: center;
-    background: rgba(255, 200, 0, 0.04);
-    border: 1px solid rgba(255, 180, 0, 0.15);
+    background: rgba(18, 12, 0, 0.70);
+    border: 1px solid rgba(255, 240, 180, 0.45);
     border-radius: 14px;
     padding: 16px 20px;
     gap: 16px;
     transition: border-color 0.2s;
+    backdrop-filter: blur(8px);
   }
 
-  .lb-row:hover { border-color: rgba(255, 180, 0, 0.35); }
+  .lb-row:hover { border-color: rgba(255, 180, 0, 0.45); }
 
   .lb-rank {
     font-family: 'Space Grotesk', sans-serif;
@@ -58,11 +59,12 @@
 
   .lb-name {
     font-size: clamp(16px, 4.5vw, 22px);
-    font-weight: 600;
+    font-weight: 500;
     color: #fef6d0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.6);
   }
 
   .lb-phone {
@@ -75,8 +77,9 @@
     font-family: 'Space Grotesk', sans-serif;
     font-size: clamp(20px, 6vw, 30px);
     font-weight: 700;
-    color: #ffc800;
+    color: #fef6d0;
     flex-shrink: 0;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.5);
   }
 
   .lb-right { text-align: right; flex-shrink: 0; }
@@ -85,7 +88,7 @@
     font-size: 10px;
     color: #8a7430;
     margin-top: 1px;
-    font-family: 'Sarabun', sans-serif;
+    font-family: 'Kanit', sans-serif;
     font-weight: 400;
   }
 

@@ -58,13 +58,14 @@
   <title>Top Spender Dashboard</title>
 </svelte:head>
 
+    <div class="bg-overlay"></div>
 <div class="bg-orb orb-1"></div>
 <div class="bg-orb orb-2"></div>
 
 <div class="container">
   <header>
     <h1>FleurVive<br/>Top <span class="title-highlight">Spender</span></h1>
-    <div class="event-badge">Live Ranking</div>
+    <!-- <div class="event-badge">Live Ranking</div> -->
   </header>
 
   <div id="content">
@@ -100,20 +101,31 @@
       {/if}
     {/if}
   </div>
-
-  <div class="status-bar">
-    <span class="status-dot"></span>
-    <span>{lastUpdate}</span>
+  <div class="outer-status-bar">
+    <div class="status-bar ">
+      <span class="status-dot"></span>
+      <span>{lastUpdate}</span>
+    </div>
+  </div>
+  <div class="info">
+  <span class="text-underline">รางวัลสำหรับ Top Spenders</span><br/>
+    อันดับ 1 Group Canvas (Size : A2)<br/>
+    อันดับ 2 Sunflower Chibi Lamp (พร้อมลายเซ็น)<br/>
+    อันดับ 3 Sunflower Hand-Painted Tote Bag (พร้อมลายเซ็น)<br/>
+    ผู้ที่มียอดซื้อสินค้าของ FleurVive สูงที่สุด 3 อันดับ (รวมค่าบัตรเข้างาน)<br/>
+    ประกาศผลหลังกิจกรรม Lucky Draw เวลา 21.00-21.20 น.
   </div>
 </div>
 
 <style>
   :global(body) {
-    background: #100c00;
+    background: #100c00 url('/bg.png') center center / cover no-repeat fixed;
     color: #fef6d0;
     min-height: 100vh;
     overflow-x: hidden;
   }
+
+  .bg-overlay { display: none; }
 
   .bg-orb {
     position: fixed;
@@ -184,6 +196,7 @@
     letter-spacing: -1px;
     line-height: 1.1;
     margin-bottom: 12px;
+    text-shadow: 0 12px 12px rgba(0,0,0,0.1);
   }
 
   .title-highlight {
@@ -221,15 +234,26 @@
     flex-direction: column;
     gap: 8px;
   }
+  .outer-status-bar {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
 
   .status-bar {
-    display: flex;
+    display: inline-flex;
+    padding: 6px 16px;
     align-items: center;
-    justify-content: center;
     gap: 12px;
     margin-top: 40px;
     font-size: 13px;
-    color: #8a7430;
+    color: #ffc800;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 200, 0, 0.35);
+    border-radius: 100px;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .status-dot {
@@ -243,6 +267,16 @@
     text-align: center;
     padding: 60px 20px;
     color: #8a7430;
+  }
+
+  .info{
+    text-align:center;
+    margin-top: 20px;
+  }
+  .text-underline {
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 180, 0, 0.5);
+    text-underline-offset: 4px;
   }
 
   .empty-state .icon { font-size: 48px; margin-bottom: 16px; }
