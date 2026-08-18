@@ -8,6 +8,10 @@
 
   const REFRESH_INTERVAL = 60000;
 
+  const rankingList = Math.max(1, Number(__RANKING_LIST__) || 10);
+  const highlightStart = Math.max(1, Number(__HIGHLIGHT_START__) || 3);
+  const podiumCount = Math.min(rankingList, highlightStart);
+
   let spenders = $state([]);
   let lastUpdate = $state('—');
   let status = $state('loading'); // 'loading' | 'ok' | 'error' | 'empty'
@@ -15,8 +19,9 @@
   let maskingPrefix = $state(false);
   let interval;
 
-  const top3 = $derived(spenders.slice(0, 3));
-  const rest = $derived(spenders.slice(3));
+  const visibleSpenders = $derived(spenders.slice(0, rankingList));
+  const top3 = $derived(visibleSpenders.slice(0, podiumCount));
+  const rest = $derived(visibleSpenders.slice(podiumCount));
 
   async function load() {
     try {
@@ -35,7 +40,7 @@
         const prevRanks = {};
         spenders.forEach((s, i) => { prevRanks[s.phone] = i + 1; });
 
-        spenders = data.topSpenders.map((s, i) => {
+        spenders = data.topSpenders.slice(0, rankingList).map((s, i) => {
           const prev = prevRanks[s.phone];
           const newRank = i + 1;
           return { ...s, rankChange: prev !== undefined ? prev - newRank : 0 };
@@ -128,11 +133,9 @@
   </div>
   <div class="info">
   <span class="text-underline">รางวัลสำหรับ Top Spenders</span><br/>
-    อันดับ 1 Group Canvas (Size : A2)<br/>
-    อันดับ 2 Sunflower Chibi Lamp (พร้อมลายเซ็น)<br/>
-    อันดับ 3 Sunflower Hand-Painted Tote Bag (พร้อมลายเซ็น)<br/>
-    ผู้ที่มียอดซื้อสินค้าของ FleurVive สูงที่สุด 3 อันดับ (รวมค่าบัตรเข้างาน)<br/>
-    ประกาศผลหลังกิจกรรม Lucky Draw เวลา 21.00-21.20 น.
+    Natzu Drapery (Size : A2)<br/>
+    ผู้ที่มียอดซื้อสินค้าของ FleurVive สูงที่สุด (รวมค่าบัตรเข้างาน)<br/>
+    ประกาศผลหลังกิจกรรม Lucky Draw เวลา 21.00 - 21.20 น.
   </div>
 </div>
 
