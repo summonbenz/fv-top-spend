@@ -28,8 +28,8 @@
   .lb-row {
     display: flex;
     align-items: center;
-    background: rgba(18, 12, 0, 0.70);
-    border: 1px solid rgba(255, 240, 180, 0.45);
+    background: rgba(24, 24, 24, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: 14px;
     padding: 16px 20px;
     gap: 16px;
@@ -37,13 +37,13 @@
     backdrop-filter: blur(8px);
   }
 
-  .lb-row:hover { border-color: rgba(255, 180, 0, 0.45); }
+  .lb-row:hover { border-color: rgba(255, 255, 255, 0.45); }
 
   .lb-rank {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 13px;
     font-weight: 700;
-    color: #8a7430;
+    color: #d0d0d0;
     width: 28px;
     text-align: center;
     flex-shrink: 0;
@@ -60,7 +60,7 @@
   .lb-name {
     font-size: clamp(16px, 4.5vw, 22px);
     font-weight: 500;
-    color: #fef6d0;
+    color: #f5f5f5;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -69,7 +69,7 @@
 
   .lb-phone {
     font-size: 12px;
-    color: #8a7430;
+    color: #bdbdbd;
     margin-top: 2px;
   }
 
@@ -77,7 +77,7 @@
     font-family: 'Space Grotesk', sans-serif;
     font-size: clamp(20px, 6vw, 30px);
     font-weight: 700;
-    color: #fef6d0;
+    color: #ffffff;
     flex-shrink: 0;
     text-shadow: 0 1px 8px rgba(0,0,0,0.5);
   }
@@ -86,7 +86,7 @@
 
   .lb-amount-label {
     font-size: 10px;
-    color: #8a7430;
+    color: #bdbdbd;
     margin-top: 1px;
     font-family: 'Kanit', sans-serif;
     font-weight: 400;

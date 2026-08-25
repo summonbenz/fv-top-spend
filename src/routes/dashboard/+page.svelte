@@ -76,13 +76,13 @@
     <div class="bg-overlay"></div>
 <div class="bg-orb orb-1"></div>
 <div class="bg-orb orb-2"></div>
-<div class="sunflower">
-  <img src="/sunflower.png" alt="Sunflower" class="sunflower-img" />
+<div class="fleurvive">
+  <img src="/logo.png" alt="Sunflower" class="fleurvive-img" />
 </div>
 <div class="container">
   <header>
-    <img src="/logo.png" alt="FleurVive Logo" class="logo-img" />
-    <h1>Top <span class="title-highlight">Spender</span></h1>
+    <img src="/header.png" alt="header Logo" class="logo-img" />
+    <h1><span class="title-highlight">Top Spender</span></h1>
     <!-- <div class="event-badge">Live Ranking</div> -->
   </header>
 
@@ -90,7 +90,7 @@
   <div id="content">
     {#if status === 'loading'}
       <div class="empty-state">
-        <div class="icon">⏳</div>
+        <div class="spinner" aria-label="กำลังโหลด" role="status"></div>
         <p>รอสักครู่ ...</p>
       </div>
     {:else if status === 'empty' || status === 'error'}
@@ -131,18 +131,21 @@
       <span>{lastUpdate}</span>
     </div>
   </div>
-  <div class="info">
-  <span class="text-underline">รางวัลสำหรับ Top Spenders</span><br/>
-    Natzu Drapery (Size : A2)<br/>
-    ผู้ที่มียอดซื้อสินค้าของ FleurVive สูงที่สุด (รวมค่าบัตรเข้างาน)<br/>
-    ประกาศผลหลังกิจกรรม Lucky Draw เวลา 21.00 - 21.20 น.
+  <div id="marquee">
+    <div class="marquee-track">
+      <span class="text-underline">รางวัลสำหรับ Top Spenders</span>
+      Natzu Drapery (Size : A2)
+      ผู้ที่มียอดซื้อสินค้าของ FleurVive สูงที่สุด (รวมค่าบัตรเข้างาน)
+      ประกาศผลหลังกิจกรรม Lucky Draw เวลา 21.00 - 21.20 น.
+    </div>
   </div>
+ 
 </div>
 
 <style>
   :global(body) {
-    background: #100c00 url('/bg.png') center center / cover no-repeat fixed;
-    color: #fef6d0;
+    background: #050505 url('/bg.png') center center / cover no-repeat fixed;
+    color: #f5f5f5;
     height: 100vh;
     overflow: hidden;
   }
@@ -159,13 +162,13 @@
 
   .orb-1 {
     width: 520px; height: 520px;
-    background: radial-gradient(circle, rgba(255,200,0,0.15), transparent 70%);
+    background: radial-gradient(circle, rgba(255,255,255,0.10), transparent 70%);
     top: -120px; left: -120px;
   }
 
   .orb-2 {
     width: 420px; height: 420px;
-    background: radial-gradient(circle, rgba(255,140,0,0.12), transparent 70%);
+    background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 70%);
     bottom: -80px; right: -80px;
   }
 
@@ -177,15 +180,15 @@
     padding: 48px 24px 80px;
   }
 
-  .sunflower-img {
+  .fleurvive-img {
     display: block;
-    width: 100%;
+    width: 100%; 
     height: auto;
   }
 
   .logo-img {
     display: block;
-    width: clamp(140px, 38vw, 300px);
+    width: clamp(140px, 58vw, 400px);
     height: auto;
     margin: 0 auto;
   }
@@ -199,22 +202,22 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: rgba(255, 200, 0, 0.12);
-    border: 1px solid rgba(255, 200, 0, 0.35);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: 100px;
     padding: 6px 16px;
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 2.5px;
     text-transform: uppercase;
-    color: #ffc800;
+    color: #ffffff;
     margin-bottom: 20px;
   }
 
   .event-badge::before {
     content: '';
     width: 6px; height: 6px;
-    background: #ffc800;
+    background: #ffffff;
     border-radius: 50%;
     animation: pulse 2s infinite;
   }
@@ -235,15 +238,17 @@
   }
 
   .title-highlight {
-    background: linear-gradient(135deg, #ffd700, #ff8c00);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    /* background: linear-gradient(135deg, #ffffff, #bdbdbd); */
+    /* -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; */
+    /* background-clip: text; */
+    color: #ffffffed;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.81);
   }
 
   .subtitle {
     font-size: 15px;
-    color: #8a7430;
+    color: #bdbdbd;
   }
 
   .podium-section { margin-bottom: 40px; }
@@ -253,7 +258,7 @@
     font-weight: 700;
     letter-spacing: 3px;
     text-transform: uppercase;
-    color: #8a7430;
+    color: #bdbdbd;
     margin-bottom: 20px;
     text-align: center;
   }
@@ -282,9 +287,9 @@
     gap: 12px;
     margin-top: 40px;
     font-size: 13px;
-    color: #ffc800;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 200, 0, 0.35);
+    color: #f5f5f5;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.28);
     border-radius: 100px;
     width: fit-content;
     margin-left: auto;
@@ -293,7 +298,7 @@
 
   .status-dot {
     width: 8px; height: 8px;
-    background: #ffc800;
+    background: #ffffff;
     border-radius: 50%;
     animation: pulse 2s infinite;
   }
@@ -301,7 +306,7 @@
   .empty-state {
     text-align: center;
     padding: 60px 20px;
-    color: #8a7430;
+    color: #d0d0d0;
   }
 
   .paused-state {
@@ -314,9 +319,9 @@
   .paused-text {
     font-size: clamp(18px, 5vw, 26px);
     font-weight: 600;
-    color: #ffc800;
+    color: #ffffff;
     line-height: 1.6;
-    text-shadow: 0 0 20px rgba(255,200,0,0.4), 0 2px 8px rgba(0,0,0,0.6);
+    text-shadow: 0 0 20px rgba(255,255,255,0.18), 0 2px 8px rgba(0,0,0,0.6);
   }
 
   .info{
@@ -326,18 +331,61 @@
   }
   .text-underline {
     text-decoration: underline;
-    text-decoration-color: rgba(255, 180, 0, 0.5);
+    text-decoration-color: rgba(255, 255, 255, 0.5);
     text-underline-offset: 4px;
   }
 
   .empty-state .icon { font-size: 48px; margin-bottom: 16px; }
   .empty-state p { font-size: 16px; }
 
-  .sunflower {
+  #marquee{
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    font-size: 1.5em;
+    padding: 10px;
+    margin-top: 30px;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 2;
+  }
+
+  .marquee-track {
+    display: inline-block;
+    min-width: 100%;
+    padding-left: 100%;
+    animation: marquee-scroll 22s linear infinite;
+  }
+
+  @keyframes marquee-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+  }
+
+  .spinner {
+    width: 42px;
+    height: 42px;
+    margin: 0 auto 22px;
+    border: 4px solid rgba(255, 255, 255, 0.25);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .fleurvive {
     position: fixed;
     top: 0;
-    right: 0;
-    width: clamp(100px, 18vw, 220px);
+    right: 0; 
+    width: clamp(100px, 15vw, 160px);
     overflow: hidden;
     pointer-events: none;
     z-index: 0;

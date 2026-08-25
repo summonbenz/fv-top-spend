@@ -56,21 +56,21 @@
   .podium-card:hover { transform: translateX(4px); }
 
   .rank-1 {
-    background: linear-gradient(160deg, rgba(40,26,0,0.90), rgba(25,16,0,0.93));
-    border-color: rgba(255,240,180,0.75);
-    box-shadow: 0 0 24px 6px rgba(255,210,0,0.45), 0 0 60px 10px rgba(255,180,0,0.25), inset 0 1px 0 rgba(255,240,180,0.3);
+    background: linear-gradient(160deg, rgba(30,30,30,0.92), rgba(12,12,12,0.96));
+    border-color: rgba(255,255,255,0.60);
+    box-shadow: 0 0 24px 6px rgba(255,255,255,0.18), 0 0 60px 10px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.18);
   }
 
   .rank-2 {
-    background: linear-gradient(160deg, rgba(32,20,0,0.90), rgba(22,14,0,0.93));
-    border-color: rgba(255,230,160,0.55);
-    box-shadow: 0 0 20px 4px rgba(255,170,0,0.35), 0 0 50px 8px rgba(255,140,0,0.18);
+    background: linear-gradient(160deg, rgba(24,24,24,0.90), rgba(10,10,10,0.95));
+    border-color: rgba(255,255,255,0.45);
+    box-shadow: 0 0 20px 4px rgba(255,255,255,0.10), 0 0 50px 8px rgba(255,255,255,0.04);
   }
 
   .rank-3 {
-    background: linear-gradient(160deg, rgba(28,18,0,0.90), rgba(20,12,0,0.93));
-    border-color: rgba(240,200,120,0.45);
-    box-shadow: 0 0 18px 4px rgba(200,130,0,0.32), 0 0 44px 8px rgba(180,100,0,0.16);
+    background: linear-gradient(160deg, rgba(20,20,20,0.90), rgba(8,8,8,0.94));
+    border-color: rgba(255,255,255,0.32);
+    box-shadow: 0 0 18px 4px rgba(255,255,255,0.06), 0 0 44px 8px rgba(255,255,255,0.03);
   }
 
   .podium-empty { opacity: 0.3; }
@@ -101,9 +101,9 @@
     font-weight: 700;
   }
 
-  .rank-1 .rank-medal { background: #ffd700; color: #1a1000; }
-  .rank-2 .rank-medal { background: #ffaa00; color: #1a0e00; }
-  .rank-3 .rank-medal { background: #c87800; color: #fff8e0; }
+  .rank-1 .rank-medal { background: #ffffff; color: #111111; }
+  .rank-2 .rank-medal { background: #d9d9d9; color: #111111; }
+  .rank-3 .rank-medal { background: #9e9e9e; color: #111111; }
 
   .middle {
     flex: 1;
@@ -119,7 +119,7 @@
   .podium-name {
     font-size: clamp(16px, 4.5vw, 22px);
     font-weight: 500;
-    color: #fef6d0;
+    color: #f5f5f5;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -128,7 +128,7 @@
 
   .podium-phone {
     font-size: 12px;
-    color: #8a7430;
+    color: #bdbdbd;
     letter-spacing: 0.5px;
   }
 
@@ -144,13 +144,13 @@
     text-shadow: 0 1px 8px rgba(0,0,0,0.5);
   }
 
-  .rank-1 .podium-amount { color: #ffd700; }
-  .rank-2 .podium-amount { color: #ffaa00; }
-  .rank-3 .podium-amount { color: #c87800; }
+  .rank-1 .podium-amount { color: #ffffff; }
+  .rank-2 .podium-amount { color: #e0e0e0; }
+  .rank-3 .podium-amount { color: #cfcfcf; }
 
   .podium-amount-label {
     font-size: 11px;
-    color: #8a7430;
+    color: #bdbdbd;
     margin-top: 2px;
   }
 
