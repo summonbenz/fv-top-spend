@@ -82,7 +82,9 @@
 <div class="container">
   <header>
     <img src="/header.png" alt="header Logo" class="logo-img" />
-    <h1><span class="title-highlight">Top Spender</span></h1>
+    <div class="heading-text">
+      <span class="title-highlight">Top Spender</span>
+    </div>
     <!-- <div class="event-badge">Live Ranking</div> -->
   </header>
 
@@ -143,14 +145,26 @@
 </div>
 
 <style>
+  :global(html, body) {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+  }
+
   :global(body) {
     background: #050505 url('/bg.png') center center / cover no-repeat fixed;
     color: #f5f5f5;
-    height: 100vh;
+    min-height: 100vh;
     overflow: hidden;
+    box-sizing: border-box;
   }
 
   .bg-overlay { display: none; }
+
+  #content{
+    display: flex;
+    flex-direction: column;
+  }
 
   .bg-orb {
     position: fixed;
@@ -175,27 +189,37 @@
   .container {
     position: relative;
     z-index: 1;
-    max-width: 820px;
+    width: min(100%, 820px);
+    height: 100vh;
     margin: 0 auto;
-    padding: 48px 24px 80px;
+    padding: clamp(12px, 2vh, 24px) clamp(16px, 2.6vw, 28px) 78px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
   }
 
   .fleurvive-img {
     display: block;
     width: 100%; 
     height: auto;
+
   }
 
   .logo-img {
     display: block;
-    width: clamp(140px, 58vw, 400px);
+    width: 20vw;
     height: auto;
     margin: 0 auto;
   }
 
   header {
     text-align: center;
-    margin-bottom: 56px;
+    margin-bottom: clamp(12px, 2vh, 32px);
+    flex-shrink: 0;
+  }
+
+  .heading-text{
+    font-size: 2vw;
   }
 
   .event-badge {
@@ -251,7 +275,16 @@
     color: #bdbdbd;
   }
 
-  .podium-section { margin-bottom: 40px; }
+  #content {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .podium-section { margin-bottom: clamp(10px, 1.8vh, 24px); }
 
   .section-label {
     font-size: 11px;
@@ -264,20 +297,22 @@
   }
 
   .podium {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    display: grid;
+    
+    width: 100%;
   }
 
   .leaderboard {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: clamp(6px, 0.9vh, 8px);
+    width: 100%;
   }
   .outer-status-bar {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: clamp(8px, 1.6vh, 18px);
+    flex-shrink: 0;
   }
 
   .status-bar {
@@ -285,7 +320,7 @@
     padding: 6px 16px;
     align-items: center;
     gap: 12px;
-    margin-top: 40px;
+    margin-top: 0;
     font-size: 13px;
     color: #f5f5f5;
     background: rgba(0, 0, 0, 0.5);
@@ -341,9 +376,9 @@
   #marquee{
     background: rgba(0, 0, 0, 0.8);
     color: #fff;
-    font-size: 1.5em;
-    padding: 10px;
-    margin-top: 30px;
+    font-size: clamp(0.8rem, 1.6vw, 1.2rem);
+    padding: 8px 10px;
+    margin-top: auto;
     display: block;
     overflow: hidden;
     white-space: nowrap;
@@ -353,6 +388,8 @@
     width: 100%;
     box-sizing: border-box;
     z-index: 2;
+    height: clamp(32px, 4vh, 52px);
+    line-height: 1.2;
   }
 
   .marquee-track {
@@ -385,7 +422,7 @@
     position: fixed;
     top: 0;
     right: 0; 
-    width: clamp(100px, 15vw, 160px);
+    width: 8vw;
     overflow: hidden;
     pointer-events: none;
     z-index: 0;
@@ -393,5 +430,7 @@
 
   @media (max-width: 480px) {
     .podium { gap: 8px; }
+    .container { padding-bottom: 70px; }
+    #marquee { font-size: 0.76rem; }
   }
 </style>
