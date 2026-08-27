@@ -1,5 +1,5 @@
-import { PUBLIC_API_URL } from '$env/static/public';
-export const API_URL = PUBLIC_API_URL;
+// Use the local proxy endpoint so the browser calls /api/dashboard
+export const API_URL = '/api/dashboard';
 
 export function maskPhone(phone) {
   if (!phone || phone.length < 10) return phone;
