@@ -34,6 +34,7 @@
     padding: 8px 10px;
     transition: border-color 0.2s;
     backdrop-filter: blur(8px);
+    margin-top: 8px;
   }
 
   .lb-row:hover { border-color: rgba(255, 255, 255, 0.45); }
