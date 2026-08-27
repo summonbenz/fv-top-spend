@@ -305,7 +305,7 @@
   .leaderboard {
     display: flex;
     flex-direction: column;
-    gap: clamp(6px, 0.9vh, 8px);
+    gap: 8px;
     width: 100%;
   }
   .outer-status-bar {
