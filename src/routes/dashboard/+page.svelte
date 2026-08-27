@@ -336,6 +336,7 @@
     background: #ffffff;
     border-radius: 50%;
     animation: pulse 2s infinite;
+    margin-right: 5px;
   }
 
   .empty-state {
