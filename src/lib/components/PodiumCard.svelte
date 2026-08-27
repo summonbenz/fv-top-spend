@@ -91,14 +91,12 @@
   }
 
   .rank-medal {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px; height: 32px;
+    width: 32px;
+    height: 32px;
+    text-align: center;
     border-radius: 50%;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 14px;
     font-weight: 700;
+    line-height: 32px;
   }
 
   .rank-1 .rank-medal { background: #ffffff; color: #111111; }

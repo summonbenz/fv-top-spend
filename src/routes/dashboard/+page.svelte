@@ -17,6 +17,7 @@
   let status = $state('loading'); // 'loading' | 'ok' | 'error' | 'empty'
   let paused = $state(false);
   let maskingPrefix = $state(false);
+  let noticeMessage = $state('');
   let interval;
 
   const visibleSpenders = $derived(spenders.slice(0, rankingList));
@@ -29,6 +30,7 @@
 
       paused = data.pause === true || String(data.pause).toLowerCase() === 'true';
       maskingPrefix = data.maskingPrefix === true || String(data.maskingPrefix).toLowerCase() === 'true';
+      noticeMessage = data.messageNotice ? String(data.messageNotice) : '';
 
       if (paused) {
         status = 'ok';
@@ -135,10 +137,7 @@
   </div>
   <div id="marquee">
     <div class="marquee-track">
-      <span class="text-underline">รางวัลสำหรับ Top Spenders</span>
-      Natzu Drapery (Size : A2)
-      ผู้ที่มียอดซื้อสินค้าของ FleurVive สูงที่สุด (รวมค่าบัตรเข้างาน)
-      ประกาศผลหลังกิจกรรม Lucky Draw เวลา 21.00 - 21.20 น.
+      {@html noticeMessage}
     </div>
   </div>
  
@@ -364,10 +363,11 @@
     margin-top: 20px;
     text-shadow: 0 0 12px rgba(0,0,0,0.9), 0 2px 8px rgba(0,0,0,0.8), 0 0 30px rgba(0,0,0,0.6);
   }
-  .text-underline {
+  :global(.text-underline) {
     text-decoration: underline;
-    text-decoration-color: rgba(255, 255, 255, 0.5);
+    text-decoration-color: rgba(255, 255, 255, 0.8);
     text-underline-offset: 4px;
+    text-decoration-thickness: 2px;
   }
 
   .empty-state .icon { font-size: 48px; margin-bottom: 16px; }
