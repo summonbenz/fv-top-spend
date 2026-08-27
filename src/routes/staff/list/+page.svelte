@@ -107,6 +107,7 @@
     justify-content: space-between;
     margin-bottom: 32px;
     gap: 16px;
+    --gap: 16px;
   }
 
   h1 {
@@ -125,6 +126,7 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
+    --gap: 6px;
     background: #1a1a24;
     border: 1px solid #2a2a38;
     border-radius: 10px;
@@ -136,6 +138,14 @@
     white-space: nowrap;
     transition: border-color 0.2s;
     flex-shrink: 0;
+  }
+
+  /* gap fallbacks */
+  .header > * + * { margin-left: var(--gap); }
+  .btn-back > * + * { margin-left: var(--gap); }
+  @supports (gap: 1px) {
+    .header > * + * { margin-left: 0; }
+    .btn-back > * + * { margin-left: 0; }
   }
 
   .btn-back:hover { border-color: #7c6af7; color: #a89af9; }

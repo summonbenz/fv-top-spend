@@ -50,7 +50,16 @@
     display: flex;
     align-items: center;
     gap: 16px;
+    --gap: 16px;
+    -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
+  }
+
+  /* Fallback for browsers without flex gap support (e.g. Android WebView 83) */
+  .podium-card > * + * { margin-left: var(--gap); }
+  @supports (gap: 1px) {
+    .podium-card > * + * { margin-left: 0; }
+  }
   }
 
   .podium-card:hover { transform: translateX(4px); }
@@ -80,8 +89,14 @@
     flex-direction: column;
     align-items: center;
     gap: 4px;
+    --gap-v: 4px;
     flex-shrink: 0;
     width: 52px;
+  }
+
+  .left > * + * { margin-top: var(--gap-v); }
+  @supports (gap: 1px) {
+    .left > * + * { margin-top: 0; }
   }
 
   .crown {
@@ -112,6 +127,12 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    --gap: 8px;
+  }
+
+  .podium-name-row > * + * { margin-left: var(--gap); }
+  @supports (gap: 1px) {
+    .podium-name-row > * + * { margin-left: 0; }
   }
 
   .podium-name {
@@ -169,7 +190,11 @@
   }
 
   @media (max-width: 480px) {
-    .podium-card { padding: 16px; gap: 12px; }
+    .podium-card { padding: 16px; gap: 12px; --gap: 12px; }
+    .podium-card > * + * { margin-left: var(--gap); }
+    @supports (gap: 1px) {
+      .podium-card > * + * { margin-left: 0; }
+    }
     .crown { font-size: 20px; }
   }
 </style>

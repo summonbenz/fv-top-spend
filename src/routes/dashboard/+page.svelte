@@ -225,6 +225,7 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    --gap: 8px;
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: 100px;
@@ -318,6 +319,7 @@
     padding: 6px 16px;
     align-items: center;
     gap: 12px;
+    --gap: 12px;
     margin-top: 0;
     font-size: 13px;
     color: #f5f5f5;
@@ -327,6 +329,14 @@
     width: fit-content;
     margin-left: auto;
     margin-right: auto;
+  }
+
+  /* gap fallbacks for older WebView */
+  .event-badge > * + * { margin-left: var(--gap); }
+  .status-bar > * + * { margin-left: var(--gap); }
+  @supports (gap: 1px) {
+    .event-badge > * + * { margin-left: 0; }
+    .status-bar > * + * { margin-left: 0; }
   }
 
   .status-dot {

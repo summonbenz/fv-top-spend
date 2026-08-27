@@ -33,6 +33,7 @@
     border-radius: 14px;
     padding: 8px 10px;
     transition: border-color 0.2s;
+    -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
     margin-top: 8px;
   }
@@ -55,6 +56,12 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    --gap: 8px;
+  }
+
+  .lb-name-row > * + * { margin-left: var(--gap); }
+  @supports (gap: 1px) {
+    .lb-name-row > * + * { margin-left: 0; }
   }
 
   .lb-name {

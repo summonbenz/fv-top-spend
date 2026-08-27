@@ -21,9 +21,15 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    --gap: 10px;
     transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     z-index: 100;
     white-space: nowrap;
+  }
+
+  .toast > * + * { margin-left: var(--gap); }
+  @supports (gap: 1px) {
+    .toast > * + * { margin-left: 0; }
   }
 
   .toast.show { transform: translateX(-50%) translateY(0); }

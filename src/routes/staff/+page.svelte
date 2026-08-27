@@ -265,6 +265,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    --gap: 10px;
     background: rgba(52, 211, 153, 0.08);
     border: 1.5px solid rgba(52, 211, 153, 0.3);
     border-radius: 12px;
@@ -362,6 +363,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    --gap: 10px;
     margin-top: 16px;
   }
 
@@ -379,6 +381,14 @@
     font-weight: 600;
     text-decoration: none;
     transition: background 0.2s;
+  }
+
+  /* gap fallback for older WebView */
+  .name-found > * + * { margin-left: var(--gap); }
+  .bottom-actions > * + * { margin-top: var(--gap); }
+  @supports (gap: 1px) {
+    .name-found > * + * { margin-left: 0; }
+    .bottom-actions > * + * { margin-top: 0; }
   }
 
   .btn-list:hover { background: rgba(124, 106, 247, 0.2); }
