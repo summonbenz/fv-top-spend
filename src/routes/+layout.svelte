@@ -1,4 +1,17 @@
 <script>
+  // Polyfill String.replaceAll for older browsers/environments
+  if (!String.prototype.replaceAll) {
+    // eslint-disable-next-line no-extend-native
+    String.prototype.replaceAll = function(search, replacement) {
+      const str = String(this);
+      if (search instanceof RegExp) {
+        if (!search.global) throw new TypeError('replaceAll must use a global RegExp');
+        return str.replace(search, replacement);
+      }
+      return str.split(String(search)).join(String(replacement));
+    };
+  }
+
   let { children } = $props();
 </script>
 
