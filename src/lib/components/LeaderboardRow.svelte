@@ -32,7 +32,6 @@
     border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: 14px;
     padding: 16px 20px;
-    gap: 16px;
     transition: border-color 0.2s;
     backdrop-filter: blur(8px);
   }
