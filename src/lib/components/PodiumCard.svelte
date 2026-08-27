@@ -32,7 +32,7 @@
   <div class="right">
     {#if item}
       <div class="podium-amount"><AnimatedNumber value={item.total} prefix="฿" storageKey={item.phone} mask={maskingPrefix} /></div>
-      <div class="podium-amount-label">ยอดรวม</div>
+      <!-- <div class="podium-amount-label">ยอดรวม</div> -->
     {:else}
       <div class="podium-amount">—</div>
     {/if}
@@ -42,7 +42,7 @@
 <style>
   .podium-card {
     border-radius: 20px;
-    padding: 20px 24px;
+    padding: 10px 12px;
     border: 1px solid transparent;
     position: relative;
     overflow: hidden;

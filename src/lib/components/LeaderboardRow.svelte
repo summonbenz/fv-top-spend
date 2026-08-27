@@ -20,7 +20,7 @@
   </div>
   <div class="lb-right">
     <div class="lb-amount"><AnimatedNumber value={item.total} prefix="฿" storageKey={item.phone} mask={maskingPrefix} /></div>
-    <div class="lb-amount-label">ยอดรวม</div>
+    <!-- <div class="lb-amount-label">ยอดรวม</div> -->
   </div>
 </div>
 
