@@ -108,16 +108,20 @@
   .rank-medal {
     width: 32px;
     height: 32px;
+    display: block;
+    background-image: url('/circle.png');
+    background-size: cover;
+    background-position: center;
+    color: #111111;
     text-align: center;
-    border-radius: 50%;
     line-height: 32px;
     /* background-image: url('/circle.png'); */
     /* background-color: #000; */
   }
 
-  .rank-1 .rank-medal { background: #ffffff; color: #111111; }
+  /* .rank-1 .rank-medal { background: #ffffff; color: #111111; }
   .rank-2 .rank-medal { background: #d9d9d9; color: #111111; }
-  .rank-3 .rank-medal { background: #9e9e9e; color: #111111; }
+  .rank-3 .rank-medal { background: #9e9e9e; color: #111111; } */
 
   .middle {
     flex: 1;
