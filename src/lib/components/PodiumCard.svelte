@@ -2,6 +2,7 @@
   import { maskPhone } from '$lib/api.js';
   import AnimatedNumber from './AnimatedNumber.svelte';
 
+
   /** @type {{ item: object|null, rank: number, rankChange?: number }} */
   let { item, rank, rankChange = 0, maskingPrefix = false } = $props();
 
@@ -109,8 +110,9 @@
     height: 32px;
     text-align: center;
     border-radius: 50%;
-    font-weight: 700;
     line-height: 32px;
+    /* background-image: url('/circle.png'); */
+    /* background-color: #000; */
   }
 
   .rank-1 .rank-medal { background: #ffffff; color: #111111; }

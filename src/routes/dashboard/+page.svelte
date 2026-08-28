@@ -19,32 +19,36 @@
   let interval;
   let revealCount = $state(0);
   let revealTimer;
+  let revealDelayTimer;
 
   const visibleSpenders = $derived(spenders.slice(0, rankingList));
-  const displayedSpenders = $derived(visibleSpenders.slice(0, revealCount));
-  const top3 = $derived(
-    Array.from({ length: podiumCount }, (_, index) => displayedSpenders[index] ?? null)
-  );
-  const rest = $derived(
-    visibleSpenders.slice(podiumCount, Math.min(revealCount, visibleSpenders.length))
-  );
+  const top3 = $derived(visibleSpenders.slice(0, podiumCount));
+  const rest = $derived(visibleSpenders.slice(podiumCount));
+
+  function clearRevealTimers() {
+    clearInterval(revealTimer);
+    clearTimeout(revealDelayTimer);
+  }
 
   function startRevealSequence() {
-    clearInterval(revealTimer);
+    clearRevealTimers();
     const total = visibleSpenders.length;
     if (total === 0) {
       revealCount = 0;
       return;
     }
 
-    revealCount = 1;
+    revealCount = 0;
 
-    revealTimer = setInterval(() => {
-      revealCount = Math.min(revealCount + 1, total);
-      if (revealCount >= total) {
-        clearInterval(revealTimer);
-      }
-    }, 320);
+    revealDelayTimer = setTimeout(() => {
+      revealCount = 1;
+      revealTimer = setInterval(() => {
+        revealCount = Math.min(revealCount + 1, total);
+        if (revealCount >= total) {
+          clearInterval(revealTimer);
+        }
+      }, 320);
+    }, 220);
   }
 
   async function load() {
@@ -56,7 +60,7 @@
       noticeMessage = data.messageNotice ? String(data.messageNotice) : '';
 
       if (paused) {
-        clearInterval(revealTimer);
+        clearRevealTimers();
         revealCount = 0;
         status = 'ok';
         lastUpdate = `อัปเดทล่าสุด ${new Date().toLocaleTimeString('th-TH')}`;
@@ -98,7 +102,7 @@
   });
 
   onDestroy(() => {
-    clearInterval(revealTimer);
+    clearRevealTimers();
     clearInterval(interval);
   });
 </script>
@@ -143,7 +147,7 @@
       <div class="podium-section">
         <div class="podium">
           {#each top3 as item, i (item?.phone ?? `podium-slot-${i}`)}
-            <div>
+            <div style:opacity={i + 1 <= revealCount ? 1 : 0} style:transition="opacity 0.35s ease">
               <PodiumCard {item} rank={i + 1} rankChange={item?.rankChange ?? 0} {maskingPrefix} />
             </div>
           {/each}
@@ -153,7 +157,7 @@
       {#if rest.length > 0}
         <div class="leaderboard">
           {#each rest as item, i (item?.phone ?? `leader-slot-${i}`)}
-            <div>
+            <div style:opacity={i + podiumCount + 1 <= revealCount ? 1 : 0} style:transition="opacity 0.35s ease">
               <LeaderboardRow {item} rankChange={item?.rankChange ?? 0} {maskingPrefix} />
             </div>
           {/each}
