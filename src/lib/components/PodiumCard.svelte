@@ -60,7 +60,6 @@
   @supports (gap: 1px) {
     .podium-card > * + * { margin-left: 0; }
   }
-  }
 
   .podium-card:hover { transform: translateX(4px); }
 
