@@ -1,7 +1,5 @@
 <script>
-  import { onMount, onDestroy } from 'svelte';
-  import { flip } from 'svelte/animate';
-  import { quintOut } from 'svelte/easing';
+  import { onMount, onDestroy, tick } from 'svelte';
   import PodiumCard from '$lib/components/PodiumCard.svelte';
   import LeaderboardRow from '$lib/components/LeaderboardRow.svelte';
   import { fetchTopSpenders } from '$lib/api.js';
@@ -19,10 +17,35 @@
   let maskingPrefix = $state(false);
   let noticeMessage = $state('');
   let interval;
+  let revealCount = $state(0);
+  let revealTimer;
 
   const visibleSpenders = $derived(spenders.slice(0, rankingList));
-  const top3 = $derived(visibleSpenders.slice(0, podiumCount));
-  const rest = $derived(visibleSpenders.slice(podiumCount));
+  const displayedSpenders = $derived(visibleSpenders.slice(0, revealCount));
+  const top3 = $derived(
+    Array.from({ length: podiumCount }, (_, index) => displayedSpenders[index] ?? null)
+  );
+  const rest = $derived(
+    visibleSpenders.slice(podiumCount, Math.min(revealCount, visibleSpenders.length))
+  );
+
+  function startRevealSequence() {
+    clearInterval(revealTimer);
+    const total = visibleSpenders.length;
+    if (total === 0) {
+      revealCount = 0;
+      return;
+    }
+
+    revealCount = 1;
+
+    revealTimer = setInterval(() => {
+      revealCount = Math.min(revealCount + 1, total);
+      if (revealCount >= total) {
+        clearInterval(revealTimer);
+      }
+    }, 320);
+  }
 
   async function load() {
     try {
@@ -33,6 +56,8 @@
       noticeMessage = data.messageNotice ? String(data.messageNotice) : '';
 
       if (paused) {
+        clearInterval(revealTimer);
+        revealCount = 0;
         status = 'ok';
         lastUpdate = `อัปเดทล่าสุด ${new Date().toLocaleTimeString('th-TH')}`;
         return;
@@ -49,11 +74,15 @@
         });
         status = 'ok';
 
+        await tick();
+        startRevealSequence();
+
         setTimeout(() => {
           spenders = spenders.map(s => ({ ...s, rankChange: 0 }));
         }, 3000);
       } else {
         spenders = [];
+        revealCount = 0;
         status = 'empty';
       }
       lastUpdate = `อัปเดทล่าสุด ${new Date().toLocaleTimeString('th-TH')}`;
@@ -68,7 +97,10 @@
     interval = setInterval(load, REFRESH_INTERVAL);
   });
 
-  onDestroy(() => clearInterval(interval));
+  onDestroy(() => {
+    clearInterval(revealTimer);
+    clearInterval(interval);
+  });
 </script>
 
 <svelte:head>
@@ -95,7 +127,7 @@
     {#if status === 'loading'}
       <div class="empty-state">
         <div class="spinner" aria-label="กำลังโหลด" role="status"></div>
-        <p>รอสักครู่ ...</p>
+        <p class="text-black">รอสักครู่ ...</p>
       </div>
     {:else if status === 'empty' || status === 'error'}
       <div class="empty-state">
@@ -110,9 +142,9 @@
     {:else}
       <div class="podium-section">
         <div class="podium">
-          {#each top3 as item, i (item.phone)}
-            <div animate:flip={{ duration: 500, easing: quintOut }}>
-              <PodiumCard {item} rank={i + 1} rankChange={item.rankChange ?? 0} {maskingPrefix} />
+          {#each top3 as item, i (item?.phone ?? `podium-slot-${i}`)}
+            <div>
+              <PodiumCard {item} rank={i + 1} rankChange={item?.rankChange ?? 0} {maskingPrefix} />
             </div>
           {/each}
         </div>
@@ -120,9 +152,9 @@
 
       {#if rest.length > 0}
         <div class="leaderboard">
-          {#each rest as item (item.phone)}
-            <div animate:flip={{ duration: 400, easing: quintOut }}>
-              <LeaderboardRow {item} rankChange={item.rankChange ?? 0} {maskingPrefix} />
+          {#each rest as item, i (item?.phone ?? `leader-slot-${i}`)}
+            <div>
+              <LeaderboardRow {item} rankChange={item?.rankChange ?? 0} {maskingPrefix} />
             </div>
           {/each}
         </div>
@@ -156,6 +188,10 @@
     min-height: 100vh;
     overflow: hidden;
     box-sizing: border-box;
+  }
+
+  .text-black{
+    color: #000;
   }
 
   .bg-overlay { display: none; }
@@ -418,8 +454,9 @@
     width: 42px;
     height: 42px;
     margin: 0 auto 22px;
-    border: 4px solid rgba(255, 255, 255, 0.25);
-    border-top-color: #ffffff;
+    border: 4px solid rgba(20, 20, 20, 0.18);
+    border-top-color: #111111;
+    border-right-color: rgba(17, 17, 17, 0.65);
     border-radius: 50%;
     animation: spin 0.9s linear infinite;
   }
