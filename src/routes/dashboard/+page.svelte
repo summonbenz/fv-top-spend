@@ -258,7 +258,7 @@
   }
 
   .heading-text{
-    font-size: 2vw;
+    font-size: 3vw;
   }
 
   .event-badge {
