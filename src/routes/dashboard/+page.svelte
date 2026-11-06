@@ -1,14 +1,32 @@
 <script>
-  import { onMount, onDestroy, tick } from 'svelte';
+  import { onMount, onDestroy, tick, untrack } from 'svelte';
   import PodiumCard from '$lib/components/PodiumCard.svelte';
   import LeaderboardRow from '$lib/components/LeaderboardRow.svelte';
+  import SettingsPanel from '$lib/components/SettingsPanel.svelte';
   import { fetchTopSpenders } from '$lib/api.js';
 
   const REFRESH_INTERVAL = 60000;
 
-  const rankingList = Math.max(1, Number(__RANKING_LIST__) || 10);
-  const highlightStart = Math.max(1, Number(__HIGHLIGHT_START__) || 3);
-  const podiumCount = Math.min(rankingList, highlightStart);
+  const SETTINGS_KEY = 'dashboard-settings';
+  const MAX_RANKING = 20;
+
+  const envRanking = Math.min(MAX_RANKING, Math.max(1, Number(__RANKING_LIST__) || 10));
+  const envHighlight = Math.max(1, Number(__HIGHLIGHT_START__) || 3);
+
+  const DEFAULT_SETTINGS = {
+    rankingList: envRanking,
+    podiumCount: Math.min(3, envRanking, envHighlight),
+    fontScale: 1,
+    podiumHeight: 0,
+    headerScale: 1,
+    titleScale: 1
+  };
+
+  let settings = $state({ ...DEFAULT_SETTINGS });
+  let settingsLoaded = false;
+
+  const rankingList = $derived(settings.rankingList);
+  const podiumCount = $derived(Math.min(settings.podiumCount, settings.rankingList));
 
   let spenders = $state([]);
   let lastUpdate = $state('—');
@@ -22,6 +40,35 @@
   let revealDelayTimer;
 
   const visibleSpenders = $derived(spenders.slice(0, rankingList));
+
+  // Save settings whenever they change (after the saved ones were loaded)
+  $effect(() => {
+    const snapshot = JSON.stringify(settings);
+    if (!settingsLoaded) return;
+    try { localStorage.setItem(SETTINGS_KEY, snapshot); } catch {}
+  });
+
+  // When the number of shown ranks changes, show the new rows right away
+  // (only rankingList is tracked, so the normal reveal animation on data refresh is untouched)
+  $effect(() => {
+    rankingList;
+    untrack(() => {
+      if (status === 'ok' && !paused) revealCount = Math.max(revealCount, visibleSpenders.length);
+    });
+  });
+
+  function loadSettings() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(SETTINGS_KEY) || 'null');
+      if (saved && typeof saved === 'object') {
+        for (const key of Object.keys(DEFAULT_SETTINGS)) {
+          const v = Number(saved[key]);
+          if (Number.isFinite(v)) settings[key] = v;
+        }
+      }
+    } catch {}
+    settingsLoaded = true;
+  }
   const top3 = $derived(visibleSpenders.slice(0, podiumCount));
   const rest = $derived(visibleSpenders.slice(podiumCount));
 
@@ -71,7 +118,7 @@
         const prevRanks = {};
         spenders.forEach((s, i) => { prevRanks[s.phone] = i + 1; });
 
-        spenders = data.topSpenders.slice(0, rankingList).map((s, i) => {
+        spenders = data.topSpenders.slice(0, MAX_RANKING).map((s, i) => {
           const prev = prevRanks[s.phone];
           const newRank = i + 1;
           return { ...s, rankChange: prev !== undefined ? prev - newRank : 0 };
@@ -97,6 +144,7 @@
   }
 
   onMount(() => {
+    loadSettings();
     load();
     interval = setInterval(load, REFRESH_INTERVAL);
   });
@@ -115,67 +163,77 @@
 <div class="bg-orb orb-1"></div>
 <div class="bg-orb orb-2"></div>
 <div class="fleurvive">
-  <img src="/logo.png" alt="Sunflower" class="fleurvive-img" />
+  <img src="/logo.webp" alt="Sunflower" class="fleurvive-img" />
 </div>
-<div class="container">
+<SettingsPanel bind:settings defaults={DEFAULT_SETTINGS} maxRanking={MAX_RANKING} />
+<div
+  class="container"
+  style:--font-scale={settings.fontScale}
+  style:--podium-height="{settings.podiumHeight}px"
+  style:--header-scale={settings.headerScale}
+  style:--title-scale={settings.titleScale}
+>
   <header>
-    <img src="/header.png" alt="header Logo" class="logo-img" />
+    <img src="/header.webp" alt="header Logo" class="logo-img" />
     <div class="heading-text">
-      <span class="title-highlight">Top Spender</span>
+      <span class="title-highlight">
+        <img src="/top_spender.png" alt="Top Spender" class="title-img" />
+      </span>
     </div>
     <!-- <div class="event-badge">Live Ranking</div> -->
   </header>
 
-
-  <div id="content">
-    {#if status === 'loading'}
-      <div class="empty-state">
-        <div class="spinner" aria-label="กำลังโหลด" role="status"></div>
-        <p class="text-black">รอสักครู่ ...</p>
-      </div>
-    {:else if status === 'empty' || status === 'error'}
-      <div class="empty-state">
-        <div class="icon">🏆</div>
-        <p>{status === 'error' ? '⚠️ ไม่สามารถโหลดข้อมูลได้' : 'ยังไม่มีข้อมูล รอ staff กรอกยอดแรก!'}</p>
-      </div>
-    {:else if paused}
-      <div class="paused-state">
-        <div class="paused-icon">🔒</div>
-        <p class="paused-text">ปิดการแสดงยอดแล้ว<br/>รอประกาศผล</p>
-      </div>
-    {:else}
-      <div class="podium-section">
-        <div class="podium">
-          {#each top3 as item, i (item?.phone ?? `podium-slot-${i}`)}
-            <div style:opacity={i + 1 <= revealCount ? 1 : 0} style:transition="opacity 0.35s ease">
-              <PodiumCard {item} rank={i + 1} rankChange={item?.rankChange ?? 0} {maskingPrefix} />
-            </div>
-          {/each}
+  <div id="content-outer">
+    <div id="content">
+      {#if status === 'loading'}
+        <div class="empty-state">
+          <div class="spinner" aria-label="กำลังโหลด" role="status"></div>
+          <p class="text-black">รอสักครู่ ...</p>
         </div>
-      </div>
-
-      {#if rest.length > 0}
-        <div class="leaderboard">
-          {#each rest as item, i (item?.phone ?? `leader-slot-${i}`)}
-            <div style:opacity={i + podiumCount + 1 <= revealCount ? 1 : 0} style:transition="opacity 0.35s ease">
-              <LeaderboardRow {item} rankChange={item?.rankChange ?? 0} {maskingPrefix} />
-            </div>
-          {/each}
+      {:else if status === 'empty' || status === 'error'}
+        <div class="empty-state">
+          <div class="icon">🧸</div>
+          <p>{status === 'error' ? '⚠️ ไม่สามารถโหลดข้อมูลได้' : 'ยังไม่มีข้อมูล รอ staff กรอกยอดแรก!'}</p>
         </div>
+      {:else if paused}
+        <div class="paused-state">
+          <div class="paused-icon">💤</div>
+          <p class="paused-text">ปิดการแสดงยอดแล้ว ฝันดีนะ<br/>รอประกาศผล</p>
+        </div>
+      {:else}
+        <div class="podium-section">
+          <div class="podium">
+            {#each top3 as item, i (item?.phone ?? `podium-slot-${i}`)}
+              <div style:opacity={i + 1 <= revealCount ? 1 : 0} style:transition="opacity 0.35s ease">
+                <PodiumCard {item} rank={i + 1} rankChange={item?.rankChange ?? 0} {maskingPrefix} />
+              </div>
+            {/each}
+          </div>
+        </div>
+
+        {#if rest.length > 0}
+          <div class="leaderboard">
+            {#each rest as item, i (item?.phone ?? `leader-slot-${i}`)}
+              <div style:opacity={i + podiumCount + 1 <= revealCount ? 1 : 0} style:transition="opacity 0.35s ease">
+                <LeaderboardRow {item} rankChange={item?.rankChange ?? 0} {maskingPrefix} />
+              </div>
+            {/each}
+          </div>
+        {/if}
       {/if}
-    {/if}
-  </div>
-  <div class="outer-status-bar">
-    <div class="status-bar ">
-      <span class="status-dot"></span>
-      <span>{lastUpdate}</span>
     </div>
-  </div>
-  <div id="marquee">
-    <div class="marquee-track">
-      {@html noticeMessage}
+    <div class="outer-status-bar">
+      <div class="status-bar ">
+        <span class="status-dot"></span>
+        <span>{lastUpdate}</span>
+      </div>
     </div>
+</div>
+<div id="marquee">
+  <div class="marquee-track">
+    {@html noticeMessage}
   </div>
+</div>
  
 </div>
 
@@ -187,18 +245,34 @@
   }
 
   :global(body) {
-    background: #050505 url('/bg.png') center center / cover no-repeat fixed;
-    color: #f5f5f5;
+    background: #f9e9fa url('/bg.png') center center / cover no-repeat fixed;
+    color: #49365f;
+    font-family: 'Mali', sans-serif;
     min-height: 100vh;
     overflow: hidden;
     box-sizing: border-box;
   }
 
   .text-black{
-    color: #000;
+    color: #49365f;
   }
 
-  .bg-overlay { display: none; }
+  .bg-overlay {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 249, 246, 0.18), rgba(255, 238, 250, 0.12));
+    pointer-events: none;
+    z-index: 0;
+  }
+  #content-outer{
+    background: rgba(255, 255, 255, 0.4);
+    /* -webkit-backdrop-filter: blur(10px); */
+    /* backdrop-filter: blur(10px); */
+    /* border: 4px solid #ffffff; */
+    border-radius: 30px;
+    padding: 30px;
+    box-shadow: 0 12px 32px rgba(241, 116, 158, 0.2);
+  }
 
   #content{
     display: flex;
@@ -215,20 +289,21 @@
 
   .orb-1 {
     width: 520px; height: 520px;
-    background: radial-gradient(circle, rgba(255,255,255,0.10), transparent 70%);
+    background: radial-gradient(circle, rgba(255, 218, 133, 0.34), transparent 70%);
     top: -120px; left: -120px;
   }
 
   .orb-2 {
     width: 420px; height: 420px;
-    background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 70%);
+    background: radial-gradient(circle, rgba(180, 161, 255, 0.32), transparent 70%);
     bottom: -80px; right: -80px;
   }
 
   .container {
     position: relative;
     z-index: 1;
-    width: min(100%, 820px);
+    font-family: 'Mali', sans-serif;
+    width: min(100%, 1200px);
     height: 100vh;
     margin: 0 auto;
     padding: clamp(12px, 2vh, 24px) clamp(16px, 2.6vw, 28px) 78px;
@@ -246,19 +321,37 @@
 
   .logo-img {
     display: block;
-    width: 20vw;
+    width: calc(20vw * var(--header-scale, 1));
     height: auto;
     margin: 0 auto;
+    animation: float 4s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .logo-img { animation: none; }
+  }
+
+  .title-img {
+    width: calc(624px * var(--title-scale, 1));
+    max-width: 100%;
+    height: auto;
   }
 
   header {
     text-align: center;
-    margin-bottom: clamp(12px, 2vh, 32px);
+    margin-bottom: clamp(12px, 1vh, 32px);
     flex-shrink: 0;
   }
 
   .heading-text{
     font-size: 3vw;
+    margin-top: 5px;
   }
 
   .event-badge {
@@ -292,7 +385,6 @@
   }
 
   header h1 {
-    font-family: 'Space Grotesk', sans-serif;
     font-size: clamp(32px, 6vw, 52px);
     font-weight: 700;
     letter-spacing: -1px;
@@ -302,17 +394,19 @@
   }
 
   .title-highlight {
-    /* background: linear-gradient(135deg, #ffffff, #bdbdbd); */
-    /* -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent; */
-    /* background-clip: text; */
-    color: #ffffffed;
-    text-shadow: 2px 2px 8px rgba(0,0,0,0.81);
+    background: linear-gradient(100deg, #8b5dc2 12%, #dd70ae 58%, #e99b65 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 800;
+    -webkit-text-stroke: 3px #fff;
+    paint-order: stroke fill;
+    text-shadow: none;
   }
 
   .subtitle {
     font-size: 15px;
-    color: #bdbdbd;
+    color: #614d78;
   }
 
   #content {
@@ -331,21 +425,31 @@
     font-weight: 700;
     letter-spacing: 3px;
     text-transform: uppercase;
-    color: #bdbdbd;
+    color: #795b9d;
     margin-bottom: 20px;
     text-align: center;
   }
 
   .podium {
     display: grid;
-    
+    row-gap: 12px;
     width: 100%;
   }
+
+  .podium > div + div { margin-top: 12px; }
 
   .leaderboard {
     display: flex;
     flex-direction: column;
+    gap: 12px;
     width: 100%;
+  }
+
+  .leaderboard > div + div { margin-top: 12px; }
+
+  @supports (gap: 1px) {
+    .podium > div + div,
+    .leaderboard > div + div { margin-top: 0; }
   }
   .outer-status-bar {
     display: flex;
@@ -362,13 +466,14 @@
     --gap: 12px;
     margin-top: 0;
     font-size: 13px;
-    color: #f5f5f5;
-    background: rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: #5c4775;
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(179, 145, 211, 0.42);
     border-radius: 100px;
     width: fit-content;
     margin-left: auto;
     margin-right: auto;
+    box-shadow: 0 4px 16px rgba(124, 81, 151, 0.12);
   }
 
   /* gap fallbacks for older WebView */
@@ -381,7 +486,7 @@
 
   .status-dot {
     width: 8px; height: 8px;
-    background: #ffffff;
+    background: #ed79a8;
     border-radius: 50%;
     animation: pulse 2s infinite;
     margin-right: 2px;
@@ -390,7 +495,7 @@
   .empty-state {
     text-align: center;
     padding: 60px 20px;
-    color: #d0d0d0;
+    color: #624c7b;
   }
 
   .paused-state {
@@ -403,9 +508,9 @@
   .paused-text {
     font-size: clamp(18px, 5vw, 26px);
     font-weight: 600;
-    color: #ffffff;
+    color: #674b88;
     line-height: 1.6;
-    text-shadow: 0 0 20px rgba(255,255,255,0.18), 0 2px 8px rgba(0,0,0,0.6);
+    text-shadow: 0 2px 12px rgba(255, 255, 255, 0.8);
   }
 
   .info{
@@ -415,7 +520,7 @@
   }
   :global(.text-underline) {
     text-decoration: underline;
-    text-decoration-color: rgba(255, 255, 255, 0.8);
+    text-decoration-color: rgba(139, 93, 194, 0.7);
     text-underline-offset: 4px;
     text-decoration-thickness: 2px;
   }
@@ -424,8 +529,8 @@
   .empty-state p { font-size: 16px; }
 
   #marquee{
-    background: rgba(0, 0, 0, 0.8);
-    color: #fff;
+    background: rgba(255, 249, 253, 0.92);
+    color: #684879;
     font-size: clamp(0.8rem, 1.6vw, 1.2rem);
     padding: 8px 10px;
     margin-top: auto;
@@ -440,6 +545,8 @@
     z-index: 2;
     height: clamp(32px, 4vh, 52px);
     line-height: 1.2;
+    border-top: 2px dashed rgba(241, 116, 158, 0.45);
+    box-shadow: 0 -4px 18px rgba(130, 78, 148, 0.12);
   }
 
   .marquee-track {
@@ -458,9 +565,9 @@
     width: 42px;
     height: 42px;
     margin: 0 auto 22px;
-    border: 4px solid rgba(20, 20, 20, 0.18);
-    border-top-color: #111111;
-    border-right-color: rgba(17, 17, 17, 0.65);
+    border: 4px solid rgba(159, 119, 190, 0.18);
+    border-top-color: #e879ad;
+    border-right-color: rgba(139, 93, 194, 0.65);
     border-radius: 50%;
     animation: spin 0.9s linear infinite;
   }
@@ -473,7 +580,7 @@
     position: fixed;
     top: 0;
     right: 0; 
-    width: 8vw;
+    width: 10vw;
     overflow: hidden;
     pointer-events: none;
     z-index: 0;

@@ -6,13 +6,19 @@
   /** @type {{ item: object|null, rank: number, rankChange?: number }} */
   let { item, rank, rankChange = 0, maskingPrefix = false } = $props();
 
-  const crowns = { 1: '👑', 2: '🥈', 3: '🥉' };
+  const crowns = {
+    1: { src: '/icons/canvas.svg', alt: 'Canvas' },
+    2: { src: '/icons/blanket.svg', alt: 'Blanket' },
+    3: { src: '/icons/pillow.svg', alt: 'Pillow' }
+  };
   const rankClass = $derived(`rank-${rank}`);
 </script>
 
 <div class="podium-card {rankClass} animate-in" class:podium-empty={!item}>
   <div class="left">
-    <span class="crown">{crowns[rank]}</span>
+    {#if crowns[rank]}
+      <img class="crown" src={crowns[rank].src} alt={crowns[rank].alt} />
+    {/if}
     <div class="rank-medal">{rank}</div>
   </div>
   <div class="middle">
@@ -44,6 +50,8 @@
   .podium-card {
     border-radius: 20px;
     padding: 10px 12px;
+    min-height: var(--podium-height, 0px);
+    box-sizing: border-box;
     border: 1px solid transparent;
     position: relative;
     overflow: hidden;
@@ -56,6 +64,10 @@
     backdrop-filter: blur(8px);
   }
 
+  .podium-card .podium-amount{
+        font-weight: 600;
+  }
+
   /* Fallback for browsers without flex gap support (e.g. Android WebView 83) */
   .podium-card > * + * { margin-left: var(--gap); }
   @supports (gap: 1px) {
@@ -65,21 +77,21 @@
   .podium-card:hover { transform: translateX(4px); }
 
   .rank-1 {
-    background: linear-gradient(160deg, rgba(30,30,30,0.92), rgba(12,12,12,0.96));
-    border-color: rgba(255,255,255,0.60);
-    box-shadow: 0 0 24px 6px rgba(255,255,255,0.18), 0 0 60px 10px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.18);
+    background: linear-gradient(145deg, rgba(255, 244, 249, 0.96), rgba(255, 255, 255, 0.9));
+    border-color: rgba(236, 132, 180, 0.62);
+    box-shadow: 0 8px 24px rgba(218, 112, 166, 0.2), inset 0 1px 0 rgba(255,255,255,0.92);
   }
 
   .rank-2 {
-    background: linear-gradient(160deg, rgba(24,24,24,0.90), rgba(10,10,10,0.95));
-    border-color: rgba(255,255,255,0.45);
-    box-shadow: 0 0 20px 4px rgba(255,255,255,0.10), 0 0 50px 8px rgba(255,255,255,0.04);
+    background: linear-gradient(145deg, rgba(247, 243, 255, 0.96), rgba(255, 255, 255, 0.9));
+    border-color: rgba(163, 139, 218, 0.58);
+    box-shadow: 0 8px 22px rgba(133, 103, 191, 0.16), inset 0 1px 0 rgba(255,255,255,0.92);
   }
 
   .rank-3 {
-    background: linear-gradient(160deg, rgba(20,20,20,0.90), rgba(8,8,8,0.94));
-    border-color: rgba(255,255,255,0.32);
-    box-shadow: 0 0 18px 4px rgba(255,255,255,0.06), 0 0 44px 8px rgba(255,255,255,0.03);
+    background: linear-gradient(145deg, rgba(239, 249, 255, 0.96), rgba(255, 255, 255, 0.9));
+    border-color: rgba(126, 190, 220, 0.62);
+    box-shadow: 0 8px 22px rgba(93, 166, 199, 0.16), inset 0 1px 0 rgba(255,255,255,0.92);
   }
 
   .podium-empty { opacity: 0.3; }
@@ -100,9 +112,9 @@
   }
 
   .crown {
-    font-size: 24px;
+    width: 40px;
+    height: 40px;
     display: block;
-    line-height: 1;
   }
 
   .rank-medal {
@@ -112,16 +124,14 @@
     background-image: url('/circle.png');
     background-size: cover;
     background-position: center;
-    color: #111111;
+    color: #604677;
     text-align: center;
     line-height: 32px;
+    font-family: 'Fredoka', 'Mali', sans-serif;
+    font-weight: 600;
     /* background-image: url('/circle.png'); */
     /* background-color: #000; */
   }
-
-  /* .rank-1 .rank-medal { background: #ffffff; color: #111111; }
-  .rank-2 .rank-medal { background: #d9d9d9; color: #111111; }
-  .rank-3 .rank-medal { background: #9e9e9e; color: #111111; } */
 
   .middle {
     flex: 1;
@@ -141,18 +151,18 @@
   }
 
   .podium-name {
-    font-size: clamp(16px, 4.5vw, 22px);
+    font-size: calc(clamp(16px, 4.5vw, 22px) * var(--font-scale, 1));
     font-weight: 500;
-    color: #f5f5f5;
+    color: #513c68;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    text-shadow: 0 1px 6px rgba(0,0,0,0.6);
+    text-shadow: 0 1px 8px rgba(255,255,255,0.9);
   }
 
   .podium-phone {
     font-size: 12px;
-    color: #bdbdbd;
+    color: #806b91;
     letter-spacing: 0.5px;
   }
 
@@ -162,32 +172,31 @@
   }
 
   .podium-amount {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(20px, 6vw, 30px);
+    font-family: 'Fredoka', 'Mali', sans-serif;
+    font-size: calc(clamp(20px, 6vw, 30px) * var(--font-scale, 1));
     font-weight: 700;
-    text-shadow: 0 1px 8px rgba(0,0,0,0.5);
+    text-shadow: 0 1px 8px rgba(255,255,255,0.9);
   }
 
-  .rank-1 .podium-amount { color: #ffffff; }
-  .rank-2 .podium-amount { color: #e0e0e0; }
-  .rank-3 .podium-amount { color: #cfcfcf; }
+  .rank-1 .podium-amount { color: #c5538c; }
+  .rank-2 .podium-amount { color: #7858ad; }
+  .rank-3 .podium-amount { color: #4387a5; }
 
   .podium-amount-label {
     font-size: 11px;
-    color: #bdbdbd;
+    color: #806b91;
     margin-top: 2px;
   }
 
   .rank-change {
-    font-family: 'Space Grotesk', sans-serif;
     font-size: 13px;
     font-weight: 700;
     flex-shrink: 0;
     animation: fadeOut 3s ease forwards;
   }
 
-  .rank-change.up { color: #4ade80; }
-  .rank-change.down { color: #f87171; }
+  .rank-change.up { color: #34855b; }
+  .rank-change.down { color: #d95672; }
 
   @keyframes fadeOut {
     0%, 60% { opacity: 1; }
@@ -200,6 +209,6 @@
     @supports (gap: 1px) {
       .podium-card > * + * { margin-left: 0; }
     }
-    .crown { font-size: 20px; }
+    .crown { width: 32px; height: 32px; }
   }
 </style>

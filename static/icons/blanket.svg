@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+<defs><filter id="sticker" x="-20%" y="-20%" width="140%" height="140%"><feMorphology in="SourceAlpha" operator="dilate" radius="2.6" result="d"/><feFlood flood-color="#ffffff"/><feComposite in2="d" operator="in" result="outline"/><feGaussianBlur in="d" stdDeviation="1.6" result="b"/><feOffset in="b" dy="1.5" result="bo"/><feFlood flood-color="#b0548a" flood-opacity="0.25"/><feComposite in2="bo" operator="in" result="shadow"/><feMerge><feMergeNode in="shadow"/><feMergeNode in="outline"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<clipPath id="body"><path d="M52 16 H15 Q7 16 7 22 Q7 28 15 28 Q7 28 7 34 Q7 40 15 40 Q7 40 7 46 Q7 52 15 52 H52 Z"/></clipPath></defs>
+<g filter="url(#sticker)" stroke-linecap="round" stroke-linejoin="round">
+  <!-- fringe -->
+  <path d="M52 19 H57.5 M52 23 H57.5 M52 27 H57.5 M52 31 H57.5 M52 35 H57.5 M52 39 H57.5 M52 43 H57.5 M52 47 H57.5" stroke="#7d6dd0" stroke-width="2"/>
+  <!-- folded layers -->
+  <path d="M52 16 H15 Q7 16 7 22 Q7 28 15 28 Q7 28 7 34 Q7 40 15 40 Q7 40 7 46 Q7 52 15 52 H52 Z" fill="#cdc4f7"/>
+  <g clip-path="url(#body)" fill="#a99bec" opacity="0.5">
+    <rect x="18" y="10" width="5" height="48"/><rect x="30" y="10" width="5" height="48"/><rect x="42" y="10" width="5" height="48"/>
+    <rect x="4" y="19.5" width="52" height="5"/><rect x="4" y="31.5" width="52" height="5"/><rect x="4" y="43.5" width="52" height="5"/>
+  </g>
+  <path d="M15 28 H52 M15 40 H52" stroke="#7d6dd0" stroke-width="2.2" fill="none"/>
+  <path d="M52 16 H15 Q7 16 7 22 Q7 28 15 28 Q7 28 7 34 Q7 40 15 40 Q7 40 7 46 Q7 52 15 52 H52 Z" fill="none" stroke="#7d6dd0" stroke-width="2.6"/>
+  <!-- fold highlights -->
+  <path d="M10 20 Q9.5 22 10 24 M10 32 Q9.5 34 10 36 M10 44 Q9.5 46 10 48" stroke="#ffffff" stroke-width="1.6" fill="none" opacity="0.9"/>
+  <!-- heart patch -->
+  <path d="M38 20.6 c0-2.2 3-3 3.9-.8 c.9-2.2 3.9-1.4 3.9.8 c0 2.6-3.9 4.8-3.9 4.8 s-3.9-2.2-3.9-4.8z" fill="#f1749e" stroke="#ffffff" stroke-width="1.3"/>
+</g>
+</svg>
